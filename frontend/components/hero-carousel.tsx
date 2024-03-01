@@ -44,7 +44,7 @@ export default function HeroImages() {
   }, [api]);
 
   return (
-    <section className="flex justify-between items-center w-full">
+    <section className="flex justify-between items-center w-full md:w-3/5">
       <Carousel
         plugins={[
           Autoplay({
@@ -56,7 +56,7 @@ export default function HeroImages() {
           align: "start",
           loop: true,
         }}
-        className="md:w-1/2 my-2 overflow-hidden relative">
+        className="w-full my-2 overflow-hidden relative">
         <CarouselContent className="mx-auto px-2 md:px-1">
           {slides.map((slide) => (
             <CarouselItem key={slide.name} className="w-full overflow-hidden">
@@ -87,7 +87,7 @@ export default function HeroImages() {
           {slides.map((_, index) => (
             <span
               key={index}
-              className={`inline-block h-2 w-2 rounded-full ${
+              className={`inline-block h-1 md:h-2 w-2 md:w-10 rounded-full ${
                 current === index + 1 ? "bg-yellow-300" : "bg-black"
               }`}
               aria-current={current === index + 1 ? "true" : "false"}></span>
