@@ -4,6 +4,8 @@ import { Key } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 
+import "../app/globals.css";
+
 import LoadingSkeleton from "@/components/loadingskeleton";
 interface Product {
   id: Key | null | undefined;
@@ -20,10 +22,11 @@ export default function FeaturedProducts() {
     dispatch(addToCart(product));
   };
   return (
-    <div className="container my-8">
-      <p className="text-start font-semibold text-2xl my-5">
-        Featured Products
-      </p>
+    <div className="container my-8 flex">
+      <div className="w-1/5 mr-4 overflow-hidden">
+        <img src="/dell.jpg" className="h-auto object-cover overflow-hidden" />
+      </div>
+
       {isLoading ? (
         <div>
           <LoadingSkeleton />
@@ -31,8 +34,11 @@ export default function FeaturedProducts() {
       ) : error ? (
         <p>An error occurred</p>
       ) : (
-        <>
-          <div className="flex justify-items-center gap-2 items-center overflow-x-auto overscroll-none">
+        <div className="w-4/5">
+          <p className="text-start font-semibold text-2xl my-5">
+            Featured Products
+          </p>
+          <div className="flex justify-items-center gap-2 items-center overflow-x-scroll">
             {data?.map((product: Product) => (
               <div key={product.id}>
                 <div className="border size-72 p-1 flex flex-col justify-start items-center text-sm space-y-1">
@@ -52,7 +58,7 @@ export default function FeaturedProducts() {
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

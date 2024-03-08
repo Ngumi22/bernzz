@@ -6,6 +6,7 @@ import Hero from "@/components/hero";
 import Laptops from "@/components/laptops";
 import Feature from "@/components/feature";
 import FeaturedProducts from "@/components/featured-products";
+import Data from "@/components/category";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Feature />
       <Laptops />
       <FeaturedProducts />
+      <Data />
     </main>
   );
 }
