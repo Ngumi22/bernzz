@@ -6,6 +6,10 @@ export interface Product {
   price: number;
   category: string;
   image: string;
+  discountPercentage: number;
+  new: boolean;
+  bestSeller: boolean;
+  rating: number
 }
 export interface ItemListProps {
   defaultCategory: string | null;

@@ -7,6 +7,9 @@ import Laptops from "@/components/laptops";
 import Feature from "@/components/feature";
 import FeaturedProducts from "@/components/featured-products";
 import Data from "@/components/category";
+import DiscountedItems from "@/components/discount";
+import NewProducts from "@/components/new-products";
+import BestSeller from "@/components/best-seller";
 
 export default function Home() {
   return (
@@ -18,6 +21,9 @@ export default function Home() {
       <Laptops />
       <FeaturedProducts />
       <Data />
+      <DiscountedItems />
+      <NewProducts />
+      <BestSeller />
     </main>
   );
 }
