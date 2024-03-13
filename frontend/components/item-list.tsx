@@ -29,7 +29,7 @@ const ItemList: React.FC<ItemListProps> = ({ defaultCategory }) => {
 
   return (
     <div>
-      <ul className="flex justify-start items-center gap-20">
+      <ul className="flex justify-start items-center gap-20 overflow-x-scroll">
         {items?.map((item: Product) => (
           <li key={item.id} className="">
             <p>{item.name}</p>

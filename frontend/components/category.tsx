@@ -22,21 +22,13 @@ const Data: React.FC = () => {
     setSelectedCategory(category);
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <LoadingSkeleton />
-      </div>
-    );
-  }
-
   if (isError) {
     return <p>Error loading categories</p>;
   }
 
   return (
     <div className="container my-4">
-      <ul className="flex justify-between items-center space-x-4">
+      <ul className="flex justify-between items-center space-x-4 overflow-x-scroll">
         {categories?.map((category: string) => (
           <li
             className={`px-6 py-2 rounded-btn cursor-pointer  ${
@@ -48,7 +40,11 @@ const Data: React.FC = () => {
           </li>
         ))}
       </ul>
-      <ItemList defaultCategory={selectedCategory} />
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : (
+        <ItemList defaultCategory={selectedCategory} />
+      )}
     </div>
   );
 };

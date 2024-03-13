@@ -10,6 +10,7 @@ import Data from "@/components/category";
 import DiscountedItems from "@/components/discount";
 import NewProducts from "@/components/new-products";
 import BestSeller from "@/components/best-seller";
+import FeaturedCategories from "@/components/featured-categories";
 
 export default function Home() {
   return (
@@ -17,11 +18,10 @@ export default function Home() {
       <ToastContainer />
       <Categories />
       <Hero />
-      <Feature />
-      <Laptops />
-      <FeaturedProducts />
-      <Data />
       <DiscountedItems />
+      <Feature />
+      <FeaturedCategories />
+      <Laptops />
       <NewProducts />
       <BestSeller />
     </main>

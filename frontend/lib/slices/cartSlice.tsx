@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { Product } from "../definitions";
 
-interface CartItem {
+interface CartItem extends Product {
   name: any;
-  id: string;
+  id: number;
   cartQuantity: number;
   price: number;
 }

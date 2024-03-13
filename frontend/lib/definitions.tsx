@@ -9,7 +9,8 @@ export interface Product {
   discountPercentage: number;
   new: boolean;
   bestSeller: boolean;
-  rating: number
+  rating: number;
+  stock: number;
 }
 export interface ItemListProps {
   defaultCategory: string | null;
