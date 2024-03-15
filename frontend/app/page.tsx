@@ -11,6 +11,7 @@ import DiscountedItems from "@/components/discount";
 import NewProducts from "@/components/new-products";
 import BestSeller from "@/components/best-seller";
 import FeaturedCategories from "@/components/featured-categories";
+import Banner2 from "@/components/banner2";
 
 export default function Home() {
   return (
@@ -21,9 +22,9 @@ export default function Home() {
       <DiscountedItems />
       <Feature />
       <FeaturedCategories />
-      <Laptops />
       <NewProducts />
       <BestSeller />
+      <Banner2 />
     </main>
   );
 }

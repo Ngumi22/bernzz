@@ -20,18 +20,16 @@ export default function Categories() {
           All Categories
         </p>
       </div>
-      <ul className="flex justify-center items-center space-x-10 h-14">
+      <ul className="flex justify-center items-center space-x-20 h-14">
         <li className="cursor-pointer">
-          <a>Home</a>
+          <a href="/">Home</a>
+        </li>
+
+        <li className="cursor-pointer">
+          <a>Deals & Offers</a>
         </li>
         <li className="cursor-pointer">
-          <a>Best Seller</a>
-        </li>
-        <li className="cursor-pointer">
-          <a>Special Offers</a>
-        </li>
-        <li className="cursor-pointer">
-          <a>Sitemap</a>
+          <a>Services</a>
         </li>
         <li className="cursor-pointer">
           <a>Contact</a>

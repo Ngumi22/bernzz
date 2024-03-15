@@ -25,7 +25,7 @@ export default function DiscountedItems() {
       )
     : [];
   return (
-    <section className="container my-6 md:my-14">
+    <section className="md:container my-6 mx-8 md:my-14">
       <div className="xl:flex justify-around items-center text-center">
         <div className="xl:flex justify-around items-center gap-10">
           <p className="font-semibold text-2xl md:text-3xl">

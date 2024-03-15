@@ -22,7 +22,7 @@ export default function FeaturedProducts() {
     dispatch(addToCart(product));
   };
   return (
-    <div className="container my-8 flex">
+    <div className="container my-4 flex">
       <div className="w-1/5 mr-4 overflow-hidden">
         <img src="/dell.jpg" className="h-auto object-cover overflow-hidden" />
       </div>
@@ -35,7 +35,7 @@ export default function FeaturedProducts() {
         <p>An error occurred</p>
       ) : (
         <div className="w-4/5">
-          <p className="text-start font-semibold text-2xl my-5">
+          <p className="text-start font-semibold text-3xl my-5">
             Featured Products
           </p>
           <div className="flex justify-items-center gap-2 items-center overflow-x-scroll">

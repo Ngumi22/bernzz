@@ -111,7 +111,7 @@ const CategoryList: React.FC = () => {
         {categoriesData.map((category) => (
           <div
             key={category.id}
-            className="relative grid grid-flow-row gap-x-4">
+            className="relative grid grid-flow-row gap-x-8">
             <h2
               className={`cursor-pointer text-yellow-500 border-b py-3 px-2 flex justify-between ${
                 category.id === selectedCategory ? "font-semibold" : ""
