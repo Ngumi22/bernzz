@@ -4,7 +4,7 @@ const products = [
         name: "Dell",
         description: "6.1 Inch Display",
         brand: "Apple",
-        price: 1000,
+        price: 10000,
         new: true,
         discountPercentage: 0,
         rating: 4.69,
@@ -13,7 +13,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Laptop",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -30,7 +30,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg"
+        image: "./omen.png"
 
     }, {
         id: 3,
@@ -46,7 +46,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Computer",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg"
+        image: "./omen.png"
 
     },
     {
@@ -63,7 +63,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./omen.png"
 
     },
     {
@@ -80,7 +80,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Laptop",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
+        image: "./omen.png"
 
     },
     {
@@ -97,7 +97,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg"
+        image: "./omen.png"
 
     },
     {
@@ -114,7 +114,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Printer",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./omen.png"
 
     }, {
         id: 8,
@@ -130,7 +130,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "printer",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -147,7 +147,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Networking",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -164,7 +164,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Monitor",
-        image: ""
+        image: "./omen.png"
 
     },
     {
@@ -181,7 +181,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -198,7 +198,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -215,7 +215,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Computer",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -232,7 +232,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Monitor",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./sam.png"
 
     },
     {
@@ -249,7 +249,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg"
+        image: "./sam.png"
 
     }
 

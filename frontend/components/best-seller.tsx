@@ -29,10 +29,12 @@ export default function BestSeller() {
     (product: { bestSeller: boolean }) => product.bestSeller == true
   );
   return (
-    <section className="container md:my-8">
-      <p className="font-bold text-2xl">Best Sellers</p>
+    <section className="container md:my-8 my-2">
+      <p className="font-bold text-3xl underline underline-offset-4 pb-4">
+        Best Sellers
+      </p>
 
-      <ul className="grid md:grid-cols-5 gap-4 py-4">
+      <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 w-full gap-1">
         {bestSellers.map((product) => (
           <li key={product.id} className="my-2 border border-gray-200 rounded">
             <a className="overflow-hidden">

@@ -47,7 +47,7 @@ const Data: React.FC = () => {
   }
 
   return (
-    <div className="md:container my-4 md:px-0 px-2">
+    <div className="md:container my-2 md:px-0 px-2">
       <div className="flex">
         <ul
           ref={categoryListRef}
