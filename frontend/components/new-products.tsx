@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
 import LoadingSkeleton from "./loadingskeleton";
 import { Product } from "@/lib/definitions";
-
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 import Link from "next/link";
 
+const ITEMS_PER_PAGE = 10;
+
 export default function NewProducts() {
   const { data: allProducts, isLoading, error } = useGetAllProductsQuery("");
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
+
   const handleAddToCart = (product: any) => {
     dispatch(addToCart(product));
   };
@@ -26,26 +29,38 @@ export default function NewProducts() {
     return <p>Error loading products</p>;
   }
 
-  const newProducts: Product[] = allProducts.filter(
-    (product: { new: boolean }) => product.new == true
-  );
+  // Pagination logic
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const newProducts: Product[] = allProducts.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(allProducts.length / ITEMS_PER_PAGE);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <section className="container md:my-2 mb-4">
+    <section
+      className="container md:my-2 mb-4"
+      style={{ height: "fit-content" }}>
       <p className="font-bold text-2xl text-start my-2 underline underline-offset-4">
         New Products
       </p>
-      <div className="flex gap-x-8">
-        <div className="hidden lg:flex flex-col justify-center items-center lg:gap-8 md:gap-0 gap-8 lg:px-4 bg-green-950 w-1/4 h-auto">
-          <img src="sam.png" className="h-auto object-contain" />
+      <div className="flex gap-x-4">
+        <div className="lg:flex flex-col justify-center items-center lg:gap-8 md:gap-0 gap-8 lg:px-4 bg-green-950 w-1/5 h-auto">
+          <img src="sam.png" className="h-auto object-cover" />
           <Link
             href="/products"
             className="flex justify-center items-center border border-yellow-500 bg-yellow-500 rounded-sm py-2 px-6 cursor-pointer font-semibold text-xs uppercase hover:bg-white hover:shadow-lg">
             Shop Now
           </Link>
         </div>
-        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-3/4 w-full gap-1">
+        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1">
           {newProducts.map((product) => (
-            <li key={product.id} className="border border-gray-300 shadow-md">
+            <li
+              key={product.id}
+              className="border border-gray-300 shadow-md"
+              style={{ height: "fit-content" }}>
               <a className="overflow-hidden">
                 <img
                   loading="lazy"
@@ -89,6 +104,20 @@ export default function NewProducts() {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="flex justify-center mt-14">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mx-1 p-2 rounded-full ${
+              currentPage === index + 1
+                ? "bg-gray-700 text-white"
+                : "bg-gray-200"
+            }`}>
+            {index + 1}
+          </button>
+        ))}
       </div>
     </section>
   );

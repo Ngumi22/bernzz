@@ -34,7 +34,7 @@ export default function DiscountedItems() {
           <p className="text-sm">Sales upto 70% off the selected items</p>
         </div>
         <div className="flex justify-center items-center xl:gap-10">
-          <p className="font-bold text-2xl">
+          <p className="font-bold text-xl">
             <span className="hidden xl:flex">Hurry Up!</span> Offer ends in:
           </p>
           <div className="text-sm">
