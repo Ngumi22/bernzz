@@ -12,10 +12,11 @@ const cookieParser = require('cookie-parser');
 
 // Middleware
 app.use(express.json());
-app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 app.use(csrf({ cookie: true }));
+
+app.use(cors());
 
 // Middleware to add CSRF token to response locals
 app.use((req, res, next) => {
@@ -100,7 +101,7 @@ app.post("/register", validateRequest, (req, res) => {
     bcrypt.hash(password, saltRounds, (err, hash) => {
         // Store hashed password in database
         // Example: User.create({ username: username, password: hash });
-        res.send("User registered successfully");
+        res.send("User registered Successfully");
     });
 });
 

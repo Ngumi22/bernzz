@@ -251,6 +251,23 @@ const products = [
         category: "Phone",
         image: "./sam.png"
 
+    },
+    {
+        id: 16,
+        name: "Huawei Y6s 2024",
+        description: "6.1 Inch Display",
+        brand: "Huawei",
+        price: 100,
+        new: true,
+        discountPercentage: 0,
+        rating: 4.69,
+        stock: 94,
+        bestSeller: false,
+        "thumbnail": "...",
+        "images": ["...", "...", "..."],
+        category: "Phone",
+        image: "./sam.png"
+
     }
 
 ];
