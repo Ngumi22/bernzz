@@ -60,9 +60,9 @@ const MainNav: React.FC = () => {
         <div className="flex flex-col justify-center">
           <div className="flex justify-between items-center h-20">
             <div className="md:w-1/5">
-              <p className="text-xl md:text-4xl text-center my-auto">
+              <a href="/" className="text-xl md:text-4xl text-center my-auto">
                 BDS LOGO
-              </p>
+              </a>
             </div>
             <div className="hidden md:flex mx-4">
               <form className="flex flex-row">

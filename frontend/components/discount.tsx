@@ -33,9 +33,10 @@ export default function DiscountedItems() {
           </p>
           <p className="text-sm">Sales upto 70% off the selected items</p>
         </div>
-        <div className="flex justify-center items-center xl:gap-10">
-          <p className="font-bold text-xl">
-            <span className="hidden xl:flex">Hurry Up!</span> Offer ends in:
+        <div className="flex justify-center items-center xl:gap-5">
+          <p className="font-bold text-sm flex gap-x-1">
+            <span className="hidden lg:flex md:flex xl:flex">Hurry Up!</span>
+            Offer ends in:
           </p>
           <div className="text-sm">
             <FlipClock />

@@ -55,7 +55,7 @@ const ItemList: React.FC<ItemListProps> = ({ defaultCategory }) => {
             <a className="overflow-hidden">
               <img
                 loading="lazy"
-                className="object-cover h-48 w-full"
+                className="object-contain h-48 w-full"
                 src={product.image}
                 alt={product.name}
                 width="304"

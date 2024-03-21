@@ -40,14 +40,29 @@ export default function NewProducts() {
   };
 
   return (
-    <section
-      className="container md:my-2 mb-4"
-      style={{ height: "fit-content" }}>
-      <p className="font-bold text-2xl text-start my-2 underline underline-offset-4">
-        New Products
-      </p>
+    <section className="container mb-4" style={{ height: "fit-content" }}>
+      <div className="font-bold w-full bg-yellow-500 text-black flex justify-between items-center p-2 my-2">
+        <p className="text-md uppercase">New Products</p>
+        <a
+          className="flex gap-2 items-center text-sm hover:opacity-[0.5] cursor-pointer"
+          href="/products">
+          View All
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-arrow-right font-semibold fill-black"
+            viewBox="0 0 16 16">
+            <path
+              fillRule="evenodd"
+              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"
+            />
+          </svg>
+        </a>
+      </div>
       <div className="flex gap-x-4">
-        <div className="lg:flex flex-col justify-center items-center lg:gap-8 md:gap-0 gap-8 lg:px-4 bg-green-950 w-1/5 h-auto">
+        <div className="lg:flex hidden flex-col justify-center items-center lg:gap-8 md:gap-0 gap-8 lg:px-4 bg-green-950 w-1/5 h-auto">
           <img src="sam.png" className="h-auto object-cover" />
           <Link
             href="/products"
@@ -55,7 +70,7 @@ export default function NewProducts() {
             Shop Now
           </Link>
         </div>
-        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1">
+        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1 translate-x-4">
           {newProducts.map((product) => (
             <li
               key={product.id}
@@ -105,14 +120,14 @@ export default function NewProducts() {
           ))}
         </ul>
       </div>
-      <div className="flex justify-center mt-14">
+      <div className="flex justify-center mt-5">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 p-2 rounded-full ${
+            className={`hidden md:flex w-10 h-10 mx-1 justify-center items-center rounded-full border border-gray-200 bg-white dark:bg-gray-700 text-black dark:text-white hover:border-gray-300 dark:hover:border-gray-600 ${
               currentPage === index + 1
-                ? "bg-gray-700 text-white"
+                ? "bg-yellow-400 text-black"
                 : "bg-gray-200"
             }`}>
             {index + 1}
