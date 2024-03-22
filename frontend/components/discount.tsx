@@ -24,6 +24,8 @@ export default function DiscountedItems() {
           product.discountPercentage > 0
       )
     : [];
+
+  const limitedDiscountedProducts = discountedProducts.slice(0, 4);
   return (
     <section className="md:container my-6 mx-8 md:my-14">
       <div className="xl:flex justify-around items-center text-center">
@@ -48,7 +50,7 @@ export default function DiscountedItems() {
         <LoadingSkeleton />
       ) : (
         <ul className="grid m-0 gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center justify-items-center">
-          {discountedProducts.map((product) => (
+          {limitedDiscountedProducts.map((product) => (
             <li
               key={product.id}
               className="flex justify-between relative border-2 border-yellow-400 bg-white rounded-lg h-56 w-full">

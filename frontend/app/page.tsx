@@ -13,6 +13,7 @@ import BestSeller from "@/components/best-seller";
 import FeaturedCategories from "@/components/featured-categories";
 import Banner2 from "@/components/banner2";
 import Blog from "@/components/blog";
+import Recommended from "@/components/recommended";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       <NewProducts />
       <BestSeller />
       <Banner2 />
+      <Recommended />
       <Blog />
     </main>
   );

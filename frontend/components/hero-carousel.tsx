@@ -44,7 +44,7 @@ export default function HeroImages() {
   }, [api]);
 
   return (
-    <section className="flex justify-between items-center w-full md:w-3/5">
+    <section className="flex justify-between items-center w-full md:w-4/5 lg:w-3/5">
       <Carousel
         plugins={[
           Autoplay({
@@ -56,17 +56,17 @@ export default function HeroImages() {
           align: "start",
           loop: true,
         }}
-        className="w-full my-2 overflow-hidden relative">
-        <CarouselContent className="mx-auto px-2 md:px-1">
+        className="w-full overflow-hidden relative">
+        <CarouselContent className="">
           {slides.map((slide) => (
             <CarouselItem key={slide.name} className="w-full overflow-hidden">
               <div className="">
                 <Card>
-                  <CardContent className="md:h-96 md:items-center flex justify-center p-0 bg-yellow-500 shadow-lg rounded-md">
+                  <CardContent className="md:h-96 md:items-center flex justify-center p-0 bg-yellow-500 shadow-lg">
                     <div className="p-6">
                       <p className="font-semibold mb-2">SONY-WH-1000XM4</p>
                       <p className="">Noice Cancelling Wireless Headphone</p>
-                      <button className="text-sm bg-black text-white py-2 px-4 mt-5 rounded-md">
+                      <button className="text-sm bg-black text-white py-2 px-4 mt-5">
                         SHOP NOW
                       </button>
                     </div>
@@ -74,7 +74,7 @@ export default function HeroImages() {
                       <img
                         src={slide.imgSrc}
                         alt={slide.name}
-                        className="h-full w-full rounded-r-md"
+                        className="h-full w-full object-cover m-0 p-0"
                       />
                     </div>
                   </CardContent>
@@ -94,7 +94,6 @@ export default function HeroImages() {
           ))}
         </div>
       </Carousel>
-      <div></div>
     </section>
   );
 }
