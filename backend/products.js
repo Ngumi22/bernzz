@@ -68,7 +68,7 @@ const products = [
     },
     {
         id: 5,
-        name: "HP",
+        name: "HP core i3",
         description: "6.1 Inch Display",
         brand: "Samsung",
         price: 100,
@@ -130,7 +130,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "printer",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -142,12 +142,12 @@ const products = [
         new: true,
         discountPercentage: 70,
         rating: 4.69,
-        stock: 94,
+        stock: 101,
         bestSeller: true,
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Networking",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -181,7 +181,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -198,7 +198,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -215,7 +215,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Computer",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -232,7 +232,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Monitor",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -249,7 +249,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./sam.png"
+        image: "./omen.png"
 
     },
     {
@@ -266,7 +266,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./sam.png"
+        image: "./omen.png"
 
     }
 
