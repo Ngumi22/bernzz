@@ -14,6 +14,7 @@ import FeaturedCategories from "@/components/featured-categories";
 import Banner2 from "@/components/banner2";
 import Blog from "@/components/blog";
 import Recommended from "@/components/recommended";
+import Banner1 from "@/components/banner1";
 
 export default function Home() {
   return (
@@ -21,8 +22,9 @@ export default function Home() {
       <ToastContainer />
       <Categories />
       <Hero />
-      <DiscountedItems />
       <Feature />
+      <DiscountedItems />
+      <Banner1 />
       <FeaturedCategories />
       <NewProducts />
       <BestSeller />

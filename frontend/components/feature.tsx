@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Feature() {
   return (
-    <section className="grid grid-cols-2 w-full md:grid-cols-4 content-center rounded-lg md:container md:my-8 my-4 px-8 md:gap-0 gap-4">
+    <section className="grid grid-cols-2 w-full md:grid-cols-4 content-center rounded-lg md:container md:my-4 my-4 px-8 md:gap-0 gap-4">
       <div className="flex justify-center items-center gap-x-2 h-20 w-full border md:p-2 border-gray-400 md:border-r-0">
         <svg
           className="fill-yellow-500"

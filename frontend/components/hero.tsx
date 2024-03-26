@@ -5,10 +5,14 @@ import CategoryLists from "./categoryyy";
 
 export default function Hero() {
   return (
-    <div className="md:flex justify-between items-center gap-4 md:px-8">
-      <CategoryList />
-      <HeroImages />
-      <CategoryLists />
-    </div>
+    <section className="lg:container flex gap-x-4 lg:py-2">
+      <div className="hidden lg:block lg:w-1/4 h-full">
+        <CategoryList />
+      </div>
+      <div className="w-full lg:w-3/4 h-full">
+        <HeroImages />
+        <CategoryLists />
+      </div>
+    </section>
   );
 }

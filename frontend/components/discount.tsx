@@ -27,7 +27,7 @@ export default function DiscountedItems() {
 
   const limitedDiscountedProducts = discountedProducts.slice(0, 4);
   return (
-    <section className="md:container my-6 mx-8 md:my-14">
+    <section className="md:container my-2 mx-8 md:my-4">
       <div className="xl:flex justify-around items-center text-center">
         <div className="xl:flex justify-around items-center gap-10">
           <p className="font-semibold text-2xl md:text-3xl">

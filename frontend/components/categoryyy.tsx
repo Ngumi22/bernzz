@@ -2,12 +2,42 @@ import React from "react";
 
 export default function CategoryLists() {
   return (
-    <div className="hidden lg:grid grid-cols-1 gap-4 place-content-center h-96 w-1/5">
-      <div className="overflow-hidden border p-2 flex justify-center items-center">
-        <img src="/lap1.jpg" className="object-cover overflow-hidden" alt="" />
+    <div className="flex justify-between flex-wrap gap-x-2 my-1">
+      <div className="flex justify-center flex-1 items-center px-4 py-2 h-32 rounded-lg bg-[#9aaebe]">
+        <div className="w-full">
+          <p className="font-semibold pb-2">Trending</p>
+          <p className="font-semibold text-md">New Phone Pro</p>
+          <a className="text-sm">Save Upto 30%</a>
+        </div>
+        <img
+          src="/sam.png"
+          className="object-contain h-full w-full overflow-hidden transition ease-in-out delay-150 hover:scale-110 duration-300"
+          alt=""
+        />
       </div>
-      <div className="overflow-hidden border p-2 flex justify-center items-center">
-        <img src="/lap1.jpg" className="object-cover overflow-hidden" alt="" />
+      <div className="flex justify-center flex-1 items-center px-4 py-2 h-32 rounded-lg bg-[#f78da7]">
+        <div className="w-full">
+          <p className="font-semibold pb-2">Trending</p>
+          <p className="font-semibold text-md">New Phone Pro</p>
+          <a className="text-sm">Save Upto 30%</a>
+        </div>
+        <img
+          src="/sam.png"
+          className="object-contain h-full w-full overflow-hidden transition ease-in-out delay-150 hover:scale-110 duration-300"
+          alt=""
+        />
+      </div>
+      <div className="flex justify-center flex-1 items-center px-4 py-2 h-32 rounded-lg bg-[#abb8c3]">
+        <div className="w-full">
+          <p className="font-semibold pb-2">Trending</p>
+          <p className="font-semibold text-md">New Phone Pro</p>
+          <a className="text-sm">Save Upto 30%</a>
+        </div>
+        <img
+          src="/sam.png"
+          className="object-contain h-full w-full overflow-hidden transition ease-in-out delay-150 hover:scale-110 duration-300"
+          alt=""
+        />
       </div>
     </div>
   );

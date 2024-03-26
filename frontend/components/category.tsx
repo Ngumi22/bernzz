@@ -4,7 +4,7 @@ import { useGetCategoryQuery } from "@/lib/productsApi";
 import LoadingSkeleton from "./loadingskeleton";
 import "@/app/globals.css";
 
-const Data: React.FC = () => {
+export default function Data() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     "Laptop"
   ); // Default category here
@@ -100,6 +100,4 @@ const Data: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default Data;
+}

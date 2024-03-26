@@ -15,17 +15,17 @@ interface Slide {
   imgSrc: string;
 }
 const slides: Slide[] = [
-  { name: "Laptops", imgSrc: "lap1.jpg" },
-  { name: "Desktops", imgSrc: "lap3.jpg" },
-  { name: "Monitors", imgSrc: "lap3.jpg" },
-  { name: "Networking", imgSrc: "lap1.jpg" },
-  { name: "Accessories", imgSrc: "lap3.jpg" },
-  { name: "Phones & Tablets", imgSrc: "lap4.jpg" },
-  { name: "Kid's Zone", imgSrc: "lap1.jpg" },
-  { name: "Sales & Offers", imgSrc: "lap3.jpg" },
+  { name: "Laptops", imgSrc: "sam.png" },
+  { name: "Desktops", imgSrc: "sam.png" },
+  { name: "Monitors", imgSrc: "sam.png" },
+  { name: "Networking", imgSrc: "sam.png" },
+  { name: "Accessories", imgSrc: "sam.png" },
+  { name: "Phones & Tablets", imgSrc: "sam.png" },
+  { name: "Kid's Zone", imgSrc: "sam.png" },
+  { name: "Sales & Offers", imgSrc: "sam.png" },
 ];
 
-export default function HeroImages() {
+export default function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -44,7 +44,7 @@ export default function HeroImages() {
   }, [api]);
 
   return (
-    <section className="flex justify-between items-center w-full md:w-4/5 lg:w-3/5">
+    <section className="flex justify-between items-center w-full">
       <Carousel
         plugins={[
           Autoplay({
@@ -56,17 +56,24 @@ export default function HeroImages() {
           align: "start",
           loop: true,
         }}
-        className="w-full overflow-hidden relative">
+        className="w-full overflow-hidden relative rounded-md">
         <CarouselContent className="">
           {slides.map((slide) => (
             <CarouselItem key={slide.name} className="w-full overflow-hidden">
               <div className="">
                 <Card>
-                  <CardContent className="md:h-96 md:items-center flex justify-center p-0 bg-yellow-500 shadow-lg">
+                  <CardContent className="md:h-80 md:items-center flex justify-around items-center p-0 bg-yellow-500 shadow-lg rounded-md">
                     <div className="p-6">
-                      <p className="font-semibold mb-2">SONY-WH-1000XM4</p>
-                      <p className="">Noice Cancelling Wireless Headphone</p>
-                      <button className="text-sm bg-black text-white py-2 px-4 mt-5">
+                      <p className="font-semibold mb-2 text-2xl">
+                        SONY-WH-1000XM4
+                      </p>
+                      <p className="text-xl">
+                        Noice Cancelling Wireless Headphone
+                      </p>
+                      <p className="text-sm mt-4">
+                        Noice Cancelling Wireless Headphone
+                      </p>
+                      <button className="text-lg bg-black text-white py-2 px-6 mt-5 rounded-3xl hover:bg-white hover:border-black hover:text-black font-semibold">
                         SHOP NOW
                       </button>
                     </div>
@@ -87,7 +94,7 @@ export default function HeroImages() {
           {slides.map((_, index) => (
             <span
               key={index}
-              className={`inline-block h-1 md:h-2 w-2 md:w-10 rounded-full ${
+              className={`inline-block h-2 w-2 bg-black rounded-full ${
                 current === index + 1 ? "bg-yellow-300" : "bg-black"
               }`}
               aria-current={current === index + 1 ? "true" : "false"}></span>
