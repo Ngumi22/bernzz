@@ -1,8 +1,7 @@
-"use client";
-
-export default function Categories() {
+import React from "react";
+export default function MiniNav() {
   return (
-    <section className="bg-black text-white text-xs md:text-lg hidden ld:flex items-center md:space-x-20 md:pl-8 px-4">
+    <section className="bg-black text-white text-xs md:text-lg hidden lg:flex items-center md:space-x-20 md:pl-8 px-4">
       <div className="bg-yellow-500 hidden md:flex justify-center items-center h-14 px-10">
         <p className="flex justify-between items-center space-x-3 pr-2">
           <svg

@@ -3,21 +3,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Cart from "./cart";
 import Account from "./account";
-
-interface Category {
-  name: string;
-  href: string;
-}
+import { Category } from "@/lib/definitions";
 
 const categories: Category[] = [
-  { name: "Laptops", href: "#" },
-  { name: "Desktops", href: "#" },
-  { name: "Monitors", href: "#" },
-  { name: "Networking", href: "#" },
-  { name: "Accessories", href: "#" },
-  { name: "Phones & Tablets", href: "#" },
-  { name: "Kid's Zone", href: "#" },
-  { name: "Sales & Offers", href: "#" },
+  { id: 1, name: "Laptops", href: "#" },
+  { id: 2, name: "Desktops", href: "#" },
+  { id: 3, name: "Monitors", href: "#" },
+  { id: 4, name: "Networking", href: "#" },
+  { id: 5, name: "Accessories", href: "#" },
+  { id: 6, name: "Phones & Tablets", href: "#" },
+  { id: 7, name: "Kid's Zone", href: "#" },
+  { id: 8, name: "Sales & Offers", href: "#" },
 ];
 
 export default function MainNav() {
@@ -54,12 +50,12 @@ export default function MainNav() {
   return (
     <section className="bg-black text-white pb-2 z-50 sticky top-0">
       <div className="px-4">
-        <div className="hidden md:flex justify-between items-center">
+        <div className="hidden md:flex justify-between items-center py-4">
           Banner
         </div>
         <div className="flex flex-col justify-center">
-          <div className="flex justify-between items-center h-20">
-            <div className="md:w-1/5">
+          <div className="flex lg:justify-between items-center h-20">
+            <div className="w-1/3">
               <a href="/" className="text-xl md:text-4xl text-center my-auto">
                 BDS LOGO
               </a>
@@ -69,7 +65,7 @@ export default function MainNav() {
                 <select
                   id="pricingType"
                   name="pricingType"
-                  className="h-10 md:px-3 py-0 md:py-1 tracking-wider text-black">
+                  className="h-10 md:px-2 py-0 md:py-1 tracking-wider text-black">
                   <option value="All" defaultValue="All">
                     All
                   </option>
@@ -81,11 +77,11 @@ export default function MainNav() {
                   <input
                     type="text"
                     placeholder="I'm looking for..."
-                    className="w-40 lg:w-80 px-3 h-10"
+                    className="w-32 lg:w-80 px-3 h-10"
                   />
                   <button
                     type="submit"
-                    className="bg-yellow-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">
+                    className="bg-yellow-500 text-white rounded-r px-2 py-0 md:py-1">
                     Search
                   </button>
                 </div>
@@ -163,7 +159,7 @@ export default function MainNav() {
                   {categories.map((category) => (
                     <li
                       className="w-full hover:bg-white flex flex-col px-5"
-                      key={category.name}>
+                      key={category.id}>
                       <a
                         className="py-4 flex justify-between"
                         href={category.href}>

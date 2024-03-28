@@ -62,9 +62,7 @@ const ItemList: React.FC<ItemListProps> = ({ defaultCategory }) => {
                 height="192"
               />
             </a>
-            <span className="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
-              {product.discountPercentage}
-            </span>
+
             <div className="flex-1 flex flex-col py-2 px-3">
               <a className="flex justify-between items-center">
                 <h5 className="font-semibold tracking-tight text-slate-900">

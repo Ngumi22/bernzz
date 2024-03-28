@@ -1,19 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { Product } from "../definitions";
-
-interface CartItem extends Product {
-  name: any;
-  id: number;
-  cartQuantity: number;
-  price: number;
-}
-
-interface CartState {
-  cartItems: CartItem[];
-  cartTotalQuantity: number;
-  cartTotalAmount: number;
-}
+import { CartItem, CartState } from "../definitions";
 
 const storedCartItems =
   typeof window !== "undefined" ? localStorage.getItem("cartItems") : null;

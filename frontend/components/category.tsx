@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ItemList from "./item-list";
 import { useGetCategoryQuery } from "@/lib/productsApi";
-import LoadingSkeleton from "./loadingskeleton";
 import "@/app/globals.css";
 
 export default function Data() {
@@ -94,7 +93,7 @@ export default function Data() {
       </div>
 
       {isLoading ? (
-        <LoadingSkeleton />
+        <p>Loading...</p>
       ) : (
         <ItemList defaultCategory={selectedCategory} />
       )}

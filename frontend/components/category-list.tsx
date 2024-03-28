@@ -1,12 +1,7 @@
 "use client";
 // components/CategoryList.tsx
 import React, { useState, useEffect, useRef } from "react";
-
-interface Subcategory {
-  id: number;
-  name: string;
-  href: string;
-}
+import { Subcategory } from "@/lib/definitions";
 
 interface Category {
   id: number;

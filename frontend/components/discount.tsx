@@ -1,11 +1,11 @@
 import React from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
-import LoadingSkeleton from "./loadingskeleton";
 import { Product } from "@/lib/definitions";
 
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 import FlipClock from "./flip-clock";
+import { SkeletonCard } from "./loading-skeleton";
 
 export default function DiscountedItems() {
   const { data: allProducts, isLoading, error } = useGetAllProductsQuery("");
@@ -47,9 +47,9 @@ export default function DiscountedItems() {
       </div>
 
       {isLoading ? (
-        <LoadingSkeleton />
+        <SkeletonCard />
       ) : (
-        <ul className="grid m-0 gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center justify-items-center">
+        <ul className="grid m-0 gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-content-center justify-items-center discounted">
           {limitedDiscountedProducts.map((product) => (
             <li
               key={product.id}

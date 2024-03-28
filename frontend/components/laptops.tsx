@@ -4,7 +4,6 @@ import { Key } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 import { Product } from "@/lib/definitions";
-import LoadingSkeleton from "@/components/loadingskeleton";
 
 export default function Laptops() {
   const { data: Laptops, error, isLoading } = useGetAllProductsQuery("");
@@ -16,7 +15,7 @@ export default function Laptops() {
   if (isLoading) {
     return (
       <div className="container">
-        <LoadingSkeleton />
+        <p>Loading...</p>
       </div>
     );
   }

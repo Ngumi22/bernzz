@@ -9,11 +9,8 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { Slide } from "@/lib/definitions";
 
-interface Slide {
-  name: string;
-  imgSrc: string;
-}
 const slides: Slide[] = [
   { name: "Laptops", imgSrc: "sam.png" },
   { name: "Desktops", imgSrc: "sam.png" },

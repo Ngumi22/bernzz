@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
-import LoadingSkeleton from "./loadingskeleton";
 import { Product } from "@/lib/definitions";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
@@ -20,7 +19,7 @@ export default function NewProducts() {
   if (isLoading) {
     return (
       <div>
-        <LoadingSkeleton />
+        <p>Loading...</p>
       </div>
     );
   }
@@ -70,7 +69,7 @@ export default function NewProducts() {
             Shop Now
           </Link>
         </div>
-        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1 translate-x-4">
+        <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1 translate-x-4 new">
           {newProducts.map((product) => (
             <li
               key={product.id}

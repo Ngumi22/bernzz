@@ -5,15 +5,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 
 import "../app/globals.css";
-
-import LoadingSkeleton from "@/components/loadingskeleton";
-interface Product {
-  id: Key | null | undefined;
-  image: string;
-  description: string;
-  name: string;
-  price: string | number;
-}
+import { Product } from "@/lib/definitions";
 
 export default function FeaturedProducts() {
   const { data, error, isLoading } = useGetAllProductsQuery("");
@@ -29,7 +21,7 @@ export default function FeaturedProducts() {
 
       {isLoading ? (
         <div>
-          <LoadingSkeleton />
+          <p>Loading...</p>
         </div>
       ) : error ? (
         <p>An error occurred</p>

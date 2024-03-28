@@ -11,7 +11,7 @@ import {
 } from "@/lib/slices/cartSlice";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -85,38 +85,40 @@ export default function Cart() {
             </div>
           ) : (
             <div>
-              <div className="">
-                {cart.cartItems?.map((cartItem: any) => (
-                  <div
-                    className="flex justify-between items-center my-2 border-b py-2"
-                    key={cartItem.id}>
-                    <div>
-                      <img
-                        className="h-20"
-                        src={cartItem.image}
-                        alt={cartItem.name}
-                      />
-                    </div>
-                    <div className="flex justify-between items-center gap-3">
-                      <button onClick={() => handleDecreaseCart(cartItem)}>
-                        -
-                      </button>
-                      <div>{cartItem.cartQuantity}</div>
-                      <button onClick={() => handleIncreaseCart(cartItem)}>
-                        +
-                      </button>
-                    </div>
-                    <div className="">
-                      ${cartItem.price * cartItem.cartQuantity}
-                    </div>
-                    <button
-                      className="text-red-700"
-                      onClick={() => handleRemoveFromCart(cartItem)}>
-                      X
+              {cart.cartItems?.map((cartItem: any) => (
+                <div
+                  className="flex justify-between items-center my-2 border-b py-2"
+                  key={cartItem.id}>
+                  <p>{cartItem.name}</p>
+                  <div>
+                    <Image
+                      className="h-20"
+                      src={cartItem.image}
+                      alt={cartItem.name}
+                      height={100}
+                      width={100}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center gap-3">
+                    <button onClick={() => handleDecreaseCart(cartItem)}>
+                      -
+                    </button>
+                    <div>{cartItem.cartQuantity}</div>
+                    <button onClick={() => handleIncreaseCart(cartItem)}>
+                      +
                     </button>
                   </div>
-                ))}
-              </div>
+                  <div className="">
+                    ${cartItem.price * cartItem.cartQuantity}
+                  </div>
+                  <button
+                    className="text-red-700"
+                    onClick={() => handleRemoveFromCart(cartItem)}>
+                    X
+                  </button>
+                </div>
+              ))}
+
               <div className="flex justify-between items-center">
                 <button
                   className="border px-4 py-2"

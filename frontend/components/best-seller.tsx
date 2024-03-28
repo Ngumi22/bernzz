@@ -1,6 +1,5 @@
 import React from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
-import LoadingSkeleton from "./loadingskeleton";
 import { Product } from "@/lib/definitions";
 
 import { useDispatch } from "react-redux";
@@ -16,7 +15,7 @@ export default function BestSeller() {
   if (isLoading) {
     return (
       <div>
-        <LoadingSkeleton />
+        <p>Loading...</p>
       </div>
     );
   }
@@ -53,7 +52,7 @@ export default function BestSeller() {
         </a>
       </div>
 
-      <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 w-full gap-1">
+      <ul className="grid lg:grid-cols-4 xl:grid-cols-5 grid-cols-2 md:grid-cols-3 w-full gap-1 best-seller">
         {limitedNewProducts.map((product) => (
           <li key={product.id} className="my-2 border border-gray-200 rounded">
             <a className="overflow-hidden">
@@ -66,9 +65,7 @@ export default function BestSeller() {
                 height="192"
               />
             </a>
-            <span className="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white">
-              {product.discountPercentage}
-            </span>
+
             <div className="flex-1 flex flex-col py-2 px-3">
               <a className="flex justify-between items-center">
                 <h5 className="font-semibold tracking-tight text-slate-900">
