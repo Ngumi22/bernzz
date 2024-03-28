@@ -3,17 +3,17 @@ const products = [
         id: 1,
         name: "Dell",
         description: "6.1 Inch Display",
-        brand: "Apple",
+        brand: "Dell",
         price: 10000,
         new: true,
         discountPercentage: 0,
-        rating: 4.69,
+        rating: 2,
         stock: 1,
         bestSeller: false,
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Laptop",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
@@ -24,17 +24,17 @@ const products = [
         price: 800,
         new: true,
         discountPercentage: 0,
-        rating: 4.69,
+        rating: 3.0,
         stock: 2,
         bestSeller: true,
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     }, {
         id: 3,
-        name: "Galaxy S Pro",
+        name: "Samsung S Pro",
         description: "6.1 Inch Display",
         brand: "Samsung",
         price: 1000,
@@ -46,12 +46,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Computer",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 4,
-        name: "Galaxy 9 Pro",
+        name: "Techno 9 Pro",
         description: "6.1 Inch Display",
         brand: "Techno",
         price: 100,
@@ -63,12 +63,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 5,
-        name: "HP core i3",
+        name: "Samsung",
         description: "6.1 Inch Display",
         brand: "Samsung",
         price: 100,
@@ -80,12 +80,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Laptop",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 6,
-        name: "Iphone 12 Pro",
+        name: "Techno 12 Pro",
         description: "6.1 Inch Display",
         brand: "Techno",
         price: 1000,
@@ -97,12 +97,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 7,
-        name: "Huawei Pro",
+        name: "Redmi Pro",
         description: "5.7 Inch Display",
         brand: "RedMi",
         price: 800,
@@ -114,11 +114,11 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Printer",
-        image: "./omen.png"
+        image: "/omen.png"
 
     }, {
         id: 8,
-        name: "Lenovo",
+        name: "Iphone",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 1000,
@@ -130,12 +130,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "printer",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 9,
-        name: "Galaxy 9 Pro",
+        name: "Iphone 9 Pro",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -147,12 +147,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Networking",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 10,
-        name: "Huawei 9 Pro",
+        name: "Iphone 14",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -164,12 +164,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Monitor",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 11,
-        name: "Huawei 9 Pro",
+        name: "Iphone 19 Pro",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -181,12 +181,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 12,
-        name: "Huawei 9 Pro",
+        name: "Iphone X",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -198,12 +198,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 13,
-        name: "Huawei 9 Pro",
+        name: "Macbook",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -215,12 +215,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Computer",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 14,
-        name: "Huawei 9 Pro",
+        name: "Macbook",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -232,12 +232,12 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Monitor",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
         id: 15,
-        name: "Huawei 12 Pro",
+        name: "Iphone",
         description: "6.1 Inch Display",
         brand: "Apple",
         price: 100,
@@ -249,7 +249,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     },
     {
@@ -266,7 +266,7 @@ const products = [
         "thumbnail": "...",
         "images": ["...", "...", "..."],
         category: "Phone",
-        image: "./omen.png"
+        image: "/omen.png"
 
     }
 

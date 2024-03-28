@@ -1,4 +1,6 @@
+// Import products data
 const products = require("./products");
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -15,7 +17,6 @@ app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 app.use(csrf({ cookie: true }));
-
 app.use(cors());
 
 // Middleware to add CSRF token to response locals
@@ -74,6 +75,18 @@ app.get("/products/category/:category", (req, res) => {
         res.send(itemsInCategory);
     } else {
         res.status(404).send(`No items found in the category: ${category}`);
+    }
+});
+
+// Endpoint to get product by ID
+app.get("/products/:productId", (req, res) => {
+    const { productId } = req.params;
+    const product = products.find(p => p.id === parseInt(productId));
+
+    if (product) {
+        res.send(product);
+    } else {
+        res.status(404).send(`Product with ID ${productId} not found`);
     }
 });
 
