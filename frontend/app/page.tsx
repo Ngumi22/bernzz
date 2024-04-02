@@ -21,9 +21,9 @@ export default function Home() {
       <MiniNav />
       <Hero />
       <Feature />
-      <ShopByBrand />
       <DiscountedItems />
       <Banner1 />
+      <ShopByBrand />
       <FeaturedCategories />
       <NewProducts />
       <BestSeller />
