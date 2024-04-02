@@ -33,9 +33,11 @@ export default function NewProducts() {
   // Pagination logic
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const newProducts: Product[] = allProducts.slice(startIndex, endIndex);
-  const newerProducts = newProducts.filter((p) => p.new === true);
-  const totalPages = Math.ceil(allProducts.length / ITEMS_PER_PAGE);
+  const newerProducts: Product[] = allProducts.filter(
+    (p: { new: boolean }) => p.new === true
+  );
+  const newProducts: Product[] = newerProducts.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(newerProducts.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -47,7 +49,8 @@ export default function NewProducts() {
         <p className="text-md uppercase">New Products</p>
         <a
           className="flex gap-2 items-center text-sm hover:opacity-[0.5] cursor-pointer"
-          href="/products">
+          href="/products"
+        >
           View All
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +58,8 @@ export default function NewProducts() {
             height="16"
             fill="currentColor"
             className="bi bi-arrow-right font-semibold fill-black"
-            viewBox="0 0 16 16">
+            viewBox="0 0 16 16"
+          >
             <path
               fillRule="evenodd"
               d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"
@@ -68,19 +72,21 @@ export default function NewProducts() {
           <img src="sam.png" className="h-auto object-cover" />
           <Link
             href="/products"
-            className="flex justify-center items-center border border-yellow-500 bg-yellow-500 rounded-sm py-2 px-6 cursor-pointer font-semibold text-xs uppercase hover:bg-white hover:shadow-lg">
+            className="flex justify-center items-center border border-yellow-500 bg-yellow-500 rounded-sm py-2 px-6 cursor-pointer font-semibold text-xs uppercase hover:bg-white hover:shadow-lg"
+          >
             Shop Now
           </Link>
         </div>
         <ul className="grid lg:grid-cols-4 xl:grid-cols-4 grid-cols-2 md:grid-cols-3 lg:w-4/5 w-full gap-1 translate-x-4 new">
-          {newerProducts.map((product) => (
+          {newProducts.map((product) => (
             <motion.li
               className="flex-none"
               style={{ minWidth: "0" }}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ type: "easeIn", delay: 0.75 }}
-              key={product.id}>
+              key={product.id}
+            >
               <Card product={product} />
             </motion.li>
           ))}
@@ -95,7 +101,8 @@ export default function NewProducts() {
               currentPage === index + 1
                 ? "bg-yellow-400 text-black"
                 : "bg-gray-200"
-            }`}>
+            }`}
+          >
             {index + 1}
           </button>
         ))}
