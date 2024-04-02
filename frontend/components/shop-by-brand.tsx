@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
 import { useDispatch } from "react-redux";
@@ -5,6 +6,8 @@ import { addToCart } from "@/lib/slices/cartSlice";
 import { Product, CartItem } from "@/lib/definitions";
 import { SkeletonCard } from "./loading-skeleton";
 import Card from "./card";
+
+import { motion } from "framer-motion";
 export default function ShopByBrand() {
   const { data: allProducts, error, isLoading } = useGetAllProductsQuery("");
   const dispatch = useDispatch();
@@ -43,7 +46,7 @@ export default function ShopByBrand() {
   }
   return (
     <section className="container">
-      <div className="font-bold w-full bg-yellow-500 text-black flex justify-between items-center p-2 my-2">
+      <div className="font-bold w-full bg-yellow-500 text-black flex justify-between items-center p-2">
         <p className="text-md uppercase">Shop By Brand</p>
         <ul className="flex brand">
           {uniqueBrands.map((category) => (
@@ -59,17 +62,21 @@ export default function ShopByBrand() {
       </div>
 
       {selectedBrand && (
-        <div>
-          <ul className="grid grid-cols-5 gap-4 lg:container">
-            {products
-              .filter((product) => product.brand === selectedBrand)
-              .map((product) => (
-                <li key={product.id}>
-                  <Card product={product} />
-                </li>
-              ))}
-          </ul>
-        </div>
+        <ul className="flex justify-start items-stretch overflow-x-scroll no-scrollbar gap-4 lg:container py-4">
+          {products
+            .filter((product) => product.brand === selectedBrand)
+            .map((product) => (
+              <motion.li
+                className="flex-none"
+                style={{ minWidth: "0" }}
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ type: "easeIn", delay: 0.75 }}
+                key={product.id}>
+                <Card product={product} />
+              </motion.li>
+            ))}
+        </ul>
       )}
     </section>
   );
