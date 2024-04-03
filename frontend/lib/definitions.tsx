@@ -11,6 +11,8 @@ export interface Product {
   bestSeller: boolean;
   rating: number;
   stock: number;
+  use: string;
+  thumbnails: string;
 }
 export interface ItemListProps {
   defaultCategory: string | null;

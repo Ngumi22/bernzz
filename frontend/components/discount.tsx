@@ -53,7 +53,7 @@ export default function DiscountedItems() {
           {limitedDiscountedProducts.map((product) => (
             <li
               key={product.id}
-              className="flex justify-between relative border-2 border-yellow-400 bg-white rounded-lg h-56 w-full">
+              className="flex justify-between relative border-2 border-yellow-400 bg-white h-56 w-full">
               <div className="w-1/2">
                 <img
                   loading="lazy"
@@ -66,7 +66,7 @@ export default function DiscountedItems() {
                 <p className="px-2 py-1 bg-gray-400 text-black rounded-md text-sm text-center">
                   {product.name}
                 </p>
-                <p className="text-black text-sm">{product.description}</p>
+                <p className="text-black text-sm">{product.name}</p>
                 <div className="flex justify-start items-center">
                   <div className=" text-red-500 text-center line-through text-sm flex">
                     KSH

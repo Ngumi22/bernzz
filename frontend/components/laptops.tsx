@@ -1,10 +1,9 @@
 import React from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
-import { Key } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 import { Product } from "@/lib/definitions";
-
+import Image from "next/image";
 export default function Laptops() {
   const { data: Laptops, error, isLoading } = useGetAllProductsQuery("");
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ export default function Laptops() {
         {limitedLaptops.map((product: Product) => (
           <li key={product.id} className="my-2 border border-gray-200 rounded">
             <a className="overflow-hidden pt-2">
-              <img
+              <Image
                 loading="lazy"
                 className="object-contain w-full rounded-t"
                 src={product.image}

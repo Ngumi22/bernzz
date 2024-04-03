@@ -14,6 +14,7 @@ import Recommended from "@/components/recommended";
 import Blog from "@/components/blog";
 import ShopByBrand from "@/components/shop-by-brand";
 import Carddd from "@/components/carddd";
+import WeeklyDeals from "@/components/weekly-deals";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <MiniNav />
       <Hero />
       <Feature />
+      <WeeklyDeals />
       <DiscountedItems />
       <Banner1 />
       <ShopByBrand />

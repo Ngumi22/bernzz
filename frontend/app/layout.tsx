@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import NextBreadcrumb from "@/components/breadcrumbs";
 
 const inter = Inter({ subsets: ["latin"] });
-const sans = Noto_Sans({ subsets: ["latin"], weight: "400" });
+const sans = Montserrat({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Bernzz Digital Solutions",

@@ -1,5 +1,5 @@
 import React from "react";
-import Data from "./category";
+import Category from "./category";
 export default function FeaturedCategories() {
   return (
     <section className="md:container md:flex md:gap-10">
@@ -14,7 +14,7 @@ export default function FeaturedCategories() {
         />
       </div>
       <div className="lg:w-4/5 w-full">
-        <Data />
+        <Category />
       </div>
     </section>
   );

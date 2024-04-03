@@ -1,26 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/lib/slices/cartSlice";
-import { Product, CartItem } from "@/lib/definitions";
+import { Product } from "@/lib/definitions";
 import { SkeletonCard } from "./loading-skeleton";
 import Card from "./card";
 
 import { motion } from "framer-motion";
 export default function ShopByBrand() {
-  const { data: allProducts, error, isLoading } = useGetAllProductsQuery("");
-  const dispatch = useDispatch();
-
-  const handleAddToCart = (product: Product) => {
-    const cartItem: CartItem = {
-      ...product,
-      cartQuantity: 1, // or any initial quantity
-    };
-    dispatch(addToCart(cartItem));
+  const brandListRef = useRef<HTMLUListElement>(null);
+  const handleScrollLeft = () => {
+    if (brandListRef.current) {
+      brandListRef.current.scrollBy({
+        left: -100,
+        behavior: "smooth",
+      });
+    }
   };
 
-  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const handleScrollRight = () => {
+    if (brandListRef.current) {
+      brandListRef.current.scrollBy({
+        left: 100,
+        behavior: "smooth",
+      });
+    }
+  };
+  const { data: allProducts, error, isLoading } = useGetAllProductsQuery("");
+
+  const [selectedBrand, setSelectedBrand] = useState<string | null>("Dell");
 
   if (isLoading) {
     return <SkeletonCard />;
@@ -44,25 +51,57 @@ export default function ShopByBrand() {
   if (selectedBrand === null && uniqueBrands.length > 0) {
     setSelectedBrand(uniqueBrands[0]);
   }
+
   return (
-    <section className="container">
-      <div className="font-bold w-full bg-yellow-500 text-black flex justify-between items-center p-2">
-        <p className="text-md uppercase">Shop By Brand</p>
-        <ul className="flex brand">
-          {uniqueBrands.map((category) => (
-            <li key={category} className="">
-              <button
-                className="px-4 py-2"
-                onClick={() => setSelectedBrand(category)}>
-                {category}
-              </button>
+    <section className="xl:container flex flex-col justify-center my-12 brand">
+      <h2 className="text-center text-2xl font-semibold pb-4">Shop By Brand</h2>
+      <div className="text-black flex justify-between xl:container mx-4 border-b-2">
+        <ul className="flex gap-6">
+          {uniqueBrands.map((brand) => (
+            <li
+              className={`xl:text-lg font-semibold text-black transition ease-in-out delay-150 hover:scale-110 duration-300 cursor-pointer  ${
+                selectedBrand === brand ? "border-b-2 border-b-yellow-400" : ""
+              }`}
+              key={brand}
+              onClick={() => setSelectedBrand(brand)}>
+              {brand}
             </li>
           ))}
         </ul>
+        <button className="flex items-center gap-1 px-2 text-yellow-500">
+          <svg
+            onClick={handleScrollLeft}
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className=""
+            viewBox="0 0 16 16">
+            <path
+              fillRule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+            />
+          </svg>
+          <svg
+            onClick={handleScrollRight}
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="underline underline-offset-2"
+            viewBox="0 0 16 16">
+            <path
+              fillRule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+        </button>
       </div>
 
       {selectedBrand && (
-        <ul className="flex justify-start items-stretch overflow-x-scroll no-scrollbar gap-4 lg:container py-4">
+        <ul
+          className="flex items-center overflow-x-scroll no-scrollbar gap-4 lg:container py-8"
+          ref={brandListRef}>
           {products
             .filter((product) => product.brand === selectedBrand)
             .map((product) => (

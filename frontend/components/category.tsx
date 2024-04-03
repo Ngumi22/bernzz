@@ -3,7 +3,7 @@ import ItemList from "./item-list";
 import { useGetCategoryQuery } from "@/lib/productsApi";
 import "@/app/globals.css";
 
-export default function Data() {
+export default function Category() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     "Laptop"
   ); // Default category here

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Card from "./card";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 4;
 
 export default function NewProducts() {
   const { data: allProducts, isLoading, error } = useGetAllProductsQuery("");
@@ -44,13 +44,12 @@ export default function NewProducts() {
   };
 
   return (
-    <section className="container mb-4" style={{ height: "fit-content" }}>
+    <section className="container mb-4">
       <div className="font-bold w-full bg-yellow-500 text-black flex justify-between items-center p-2 my-2">
         <p className="text-md uppercase">New Products</p>
         <a
           className="flex gap-2 items-center text-sm hover:opacity-[0.5] cursor-pointer"
-          href="/products"
-        >
+          href="/product">
           View All
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,8 +57,7 @@ export default function NewProducts() {
             height="16"
             fill="currentColor"
             className="bi bi-arrow-right font-semibold fill-black"
-            viewBox="0 0 16 16"
-          >
+            viewBox="0 0 16 16">
             <path
               fillRule="evenodd"
               d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"
@@ -72,8 +70,7 @@ export default function NewProducts() {
           <img src="sam.png" className="h-auto object-cover" />
           <Link
             href="/products"
-            className="flex justify-center items-center border border-yellow-500 bg-yellow-500 rounded-sm py-2 px-6 cursor-pointer font-semibold text-xs uppercase hover:bg-white hover:shadow-lg"
-          >
+            className="flex justify-center items-center border border-yellow-500 bg-yellow-500 rounded-sm py-2 px-6 cursor-pointer font-semibold text-xs uppercase hover:bg-white hover:shadow-lg">
             Shop Now
           </Link>
         </div>
@@ -85,8 +82,7 @@ export default function NewProducts() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ type: "easeIn", delay: 0.75 }}
-              key={product.id}
-            >
+              key={product.id}>
               <Card product={product} />
             </motion.li>
           ))}
@@ -101,8 +97,7 @@ export default function NewProducts() {
               currentPage === index + 1
                 ? "bg-yellow-400 text-black"
                 : "bg-gray-200"
-            }`}
-          >
+            }`}>
             {index + 1}
           </button>
         ))}
