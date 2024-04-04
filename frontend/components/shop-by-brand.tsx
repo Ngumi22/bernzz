@@ -53,8 +53,8 @@ export default function ShopByBrand() {
   }
 
   return (
-    <section className="xl:container flex flex-col justify-center my-12 brand">
-      <h2 className="text-center text-2xl font-semibold pb-4">Shop By Brand</h2>
+    <section className="xl:container flex flex-col justify-center my-8 brand">
+      <h2 className="text-start text-2xl font-semibold py-6">Shop By Brand</h2>
       <div className="text-black flex justify-between xl:container mx-4 border-b-2">
         <ul className="flex gap-6">
           {uniqueBrands.map((brand) => (

@@ -4,7 +4,6 @@ import { ToastContainer } from "react-toastify";
 import MiniNav from "@/components/mini-nav";
 import Hero from "@/components/hero";
 import Feature from "@/components/feature";
-import DiscountedItems from "@/components/discount";
 import Banner1 from "@/components/banner1";
 import FeaturedCategories from "@/components/featured-categories";
 import NewProducts from "@/components/new-products";
@@ -24,7 +23,6 @@ export default function Home() {
       <Hero />
       <Feature />
       <WeeklyDeals />
-      <DiscountedItems />
       <Banner1 />
       <ShopByBrand />
       <FeaturedCategories />
