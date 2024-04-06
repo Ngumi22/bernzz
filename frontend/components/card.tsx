@@ -100,7 +100,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
         </a>
         <a
           className="bg-yellow-400 p-1 relative group/icon"
-          href="https://whatsapp.com">
+          href="https://web.whatsapp.com">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"
