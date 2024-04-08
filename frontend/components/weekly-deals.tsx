@@ -7,6 +7,7 @@ import { IoIosExpand } from "react-icons/io";
 import Image from "next/image";
 import { Product } from "@/lib/definitions";
 import FlipClock from "./flip-clock";
+import { ThreeCircles } from "react-loader-spinner";
 
 export default function WeeklyDeals() {
   const { data: allProducts, isLoading, error } = useGetAllProductsQuery("");
@@ -14,7 +15,21 @@ export default function WeeklyDeals() {
   const handleAddToCart = (product: any) => {
     dispatch(addToCart(product));
   };
-
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center my-8">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#4fa94d"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass="mx-auto"
+        />
+      </div>
+    );
+  }
   if (error) {
     return <p>Error loading products</p>;
   }
@@ -41,11 +56,13 @@ export default function WeeklyDeals() {
             key={product.id}
             className="relative group/item bg-white shadow-md h-full max-w-sm dark:bg-gray-800 dark:border-gray-700 w-[15rem]">
             <div className="relative">
-              <img
+              <Image
                 className="rounded-t-lg p-4"
                 src={product.image}
                 alt={product.name}
                 loading="lazy"
+                width={400}
+                height={400}
               />
               <span className="absolute top-5 left-4 bg-yellow-400 p-1 font-bold">
                 -{product.discountPercentage}%

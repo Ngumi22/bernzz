@@ -65,7 +65,7 @@ export default function NewProducts() {
           </svg>
         </a>
       </div>
-      <div className="flex gap-x-4">
+      <div className="flex gap-x-2">
         <div className="lg:flex hidden flex-col justify-center items-center lg:gap-8 md:gap-0 gap-8 lg:px-4 bg-green-950 w-1/5 h-auto">
           <img src="sam.png" className="h-auto object-cover" />
           <Link

@@ -116,7 +116,7 @@ const products = [
     id: 8,
     name: "Iphone",
     description: "Iphone inspiron 15-3583 Intel celeron 4205U 14 Inch 4k LCD Display",
-    brand: "Apple",
+    brand: "Samsung",
     price: 1000,
     new: true,
     discountPercentage: 18,
@@ -221,10 +221,10 @@ const products = [
   },
   {
     id: 15,
-    name: "Huawei",
+    name: "Samsung",
     description:
-      "Huawei inspiron 15-3583 Intel celeron 4205U 14 Inch 4k LCD Display",
-    brand: "Apple",
+      "Samsung inspiron 15-3583 Intel celeron 4205U 14 Inch 4k LCD Display",
+    brand: "Samsung",
     price: 100,
     new: false,
     discountPercentage: 10,

@@ -3,15 +3,23 @@ import React from "react";
 import Image from "next/image";
 import { useGetAllProductsQuery } from "@/lib/productsApi";
 import { Product } from "@/lib/definitions";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { ThreeCircles } from "react-loader-spinner";
 
 export default function Banner1() {
   const { data: bannerProducts, isLoading, error } = useGetAllProductsQuery("");
 
   if (isLoading) {
     return (
-      <div>
-        <p>Loading...</p>
+      <div className="flex justify-center items-center">
+        <ThreeCircles
+          visible={true}
+          height="100"
+          width="100"
+          color="#4fa94d"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass="mx-auto"
+        />
       </div>
     );
   }
