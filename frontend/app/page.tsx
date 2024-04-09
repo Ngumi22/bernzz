@@ -14,12 +14,14 @@ import Blog from "@/components/blog";
 import ShopByBrand from "@/components/shop-by-brand";
 import Carddd from "@/components/carddd";
 import WeeklyDeals from "@/components/weekly-deals";
+import SideMenu from "@/components/side-menu";
 
 export default function Home() {
   return (
     <main>
       <ToastContainer />
       <MiniNav />
+      <SideMenu />
       <Hero />
       <Feature />
       <WeeklyDeals />
