@@ -1,12 +1,12 @@
 import React from "react";
-import { MegaMenu } from "./mega-menu";
+import MegaMenu from "./mega-menu";
 export default function MiniNav() {
   return (
-    <section className="bg-black  md:text-lg hidden lg:flex items-center md:space-x-20 md:pl-8 px-4">
+    <section className="bg-black uppercase md:text-lg hidden lg:flex items-center md:space-x-20 md:pl-8 px-4">
       <div>
         <MegaMenu />
       </div>
-      <ul className="flex justify-center text-white text-xs items-center space-x-20 h-14">
+      <ul className="flex justify-center text-white text-sm items-center space-x-20 h-14">
         <li className="cursor-pointer">
           <a href="/">Home</a>
         </li>

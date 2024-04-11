@@ -12,16 +12,14 @@ import Banner2 from "@/components/banner2";
 import Recommended from "@/components/recommended";
 import Blog from "@/components/blog";
 import ShopByBrand from "@/components/shop-by-brand";
-import Carddd from "@/components/carddd";
 import WeeklyDeals from "@/components/weekly-deals";
-import SideMenu from "@/components/side-menu";
+import NextBreadcrumb from "@/components/breadcrumbs";
 
 export default function Home() {
   return (
     <main>
       <ToastContainer />
       <MiniNav />
-      <SideMenu />
       <Hero />
       <Feature />
       <WeeklyDeals />

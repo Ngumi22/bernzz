@@ -61,7 +61,7 @@ const products = [
     stock: 9,
     bestSeller: true,
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
-    category: "Phone",
+    category: "Accessory",
     image: "/omen.png",
   },
   {
@@ -76,7 +76,7 @@ const products = [
     stock: 94,
     bestSeller: true,
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
-    category: "Accessory",
+    category: "Laptop",
     use: "gaming",
     image: "/omen.png",
   },

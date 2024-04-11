@@ -1,137 +1,538 @@
-"use client";
-
-import * as React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
-
-export function MegaMenu() {
+export default function MegaMenu() {
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="">
-            <span className="mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-list"
-                viewBox="0 0 16 16">
-                <path
-                  fillRule="evenodd"
-                  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                />
-              </svg>
-            </span>
-            All Categories
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="flex gap-3 p-6 w-fit lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="droppable">
+      <h2 className="text-white text-sm cursor-pointer flex justify-center items-center h-full">
+        All Categories
+        <span className="ml-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-down"
+            viewBox="0 0 16 16">
+            <path
+              fillRule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+        </span>
+      </h2>
+      <div className="mega-menu hidden absolute left-0 right-0 z-50 w-[95.5%] mx-auto px-8 bg-white">
+        <div className="flex justify-between items-center">
+          <Tabs defaultValue="Laptops" className="flex justify-center gap-8">
+            <TabsList className="flex flex-col justify-center items-start w-[18rem]">
+              <TabsTrigger value="Laptops">
+                <div className="flex flex-col items-start">
+                  <p>Laptops</p>
+                  <p className="text-sm font-normal">Trusted Laptops Shop</p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Computer">
+                <div className="flex flex-col items-start">
+                  <p>Computers</p>
+                  <p className="text-sm font-normal text-wrap">
+                    Quality Computers in Kenya
+                  </p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Phones">
+                <div className="flex flex-col items-start">
+                  <p>Phones</p>
+                  <p className="text-sm font-normal">Affordable phones</p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Desktops">
+                <div className="flex flex-col items-start">
+                  <p>Desktops</p>
+                  <p className="text-sm font-normal">Wide range of Desktops</p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Printers">
+                <div className="flex flex-col items-start">
+                  <p>Printers</p>
+                  <p className="text-sm font-normal">
+                    Cheapest quality Printers
+                  </p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Accessories">
+                <div className="flex flex-col items-start">
+                  <p>Accessories</p>
+                  <p className="text-sm font-normal">All Tech Accessories</p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="Networking">
+                <div className="flex flex-col items-start">
+                  <p>Networking</p>
+                  <p className="text-sm font-normal">All Tech Networking</p>
+                </div>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-chevron-double-right"
+                    viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708"
+                    />
+                  </svg>
+                </span>
+              </TabsTrigger>
+            </TabsList>
+            <Separator orientation="vertical" />
+            <TabsContent value="Laptops">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Laptops</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all laptops
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Computer">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Computers</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all Computers
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Phones">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Phones</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all phones
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Desktops">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Desktops</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all Desktop
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Printers">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Printers</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all printers
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Accessories">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Accessories</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all Accessories
+                </Link>
+              </div>
+            </TabsContent>
+            <TabsContent value="Networking">
+              <div className="flex justify-between items-start pt-4 pb-8 text-sm flex-col gap-8">
+                <h1 className="uppercase font-bold">Featured Networking</h1>
+                <ul className="flex justify-center items-center gap-4">
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                  <Image
+                    src="/sam.png"
+                    className="object-contain h-full"
+                    alt="Image"
+                    height={200}
+                    width={200}
+                  />
+                </ul>
+                <Link
+                  href="/products"
+                  className="uppercase py-2 px-6 bg-gray-300 text-black w-64 text-start font-bold">
+                  See all Networking
+                </Link>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}>
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

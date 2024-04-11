@@ -184,3 +184,6 @@
     gap: 1rem;
   }
 }
+.droppable:hover .mega-menu {
+  display: block;
+}

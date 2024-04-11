@@ -39,14 +39,18 @@ const ItemList: React.FC<ItemListProps> = ({ defaultCategory }) => {
   }
 
   return (
-    <div>
-      <ul
-        ref={itemListRef}
-        className="media-scroller snaps-inline my-4 no-scrollbar px-10">
-        {items?.map((product: Product) => (
-          <Card key={product.id} product={product} />
-        ))}
-      </ul>
+    <>
+      <div className="">
+        <ul
+          ref={itemListRef}
+          className="snap-x snap-mandatory scroll-pl-24 overflow-x-auto scroll-smooth p-10 no-scrollbar transition-transform duration-700 scrollbar-none md:scroll-pl-12 md:px-12">
+          <li className="grid w-max grid-flow-col auto-rows-max grid-rows-1 gap-4">
+            {items?.map((product: Product) => (
+              <Card key={product.id} product={product} />
+            ))}
+          </li>
+        </ul>
+      </div>
       <button className="flex ml-auto items-center gap-3 px-2 text-black">
         <svg
           onClick={handleScrollLeft}
@@ -75,7 +79,7 @@ const ItemList: React.FC<ItemListProps> = ({ defaultCategory }) => {
           />
         </svg>
       </button>
-    </div>
+    </>
   );
 };
 
