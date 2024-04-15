@@ -6,17 +6,21 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  keepUnusedDataFor: 30,
   endpoints: (builder) => ({
     getAllProducts: builder.query({
       //get all products
       query: () => `products`,
+      keepUnusedDataFor: 5,
     }),
 
     getCategory: builder.query({
       query: (category) => `products/category/${category}`, //get category
+      keepUnusedDataFor: 5,
     }),
     getProductById: builder.query({
       query: (id) => `products/${id}`, //get id
+      keepUnusedDataFor: 5,
     }),
   }),
 });

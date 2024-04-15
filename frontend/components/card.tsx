@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/slices/cartSlice";
 import { CartItem, Product } from "@/lib/definitions";
 import Image from "next/image";
+import { addToWish } from "@/lib/slices/wishSlice";
 
 import { IoIosExpand } from "react-icons/io";
 interface CardProps {
@@ -19,6 +20,15 @@ const Card: React.FC<CardProps> = ({ product }) => {
       cartQuantity: 1, // Assuming an initial quantity
     };
     dispatch(addToCart(cartItem));
+  };
+
+  const handleAddToWish = () => {
+    // Create a wishItem from the Product // Renamed variable to avoid conflict
+    const wishItem = {
+      ...product,
+      wishQuantity: 1, // Assuming an initial quantity
+    };
+    dispatch(addToWish(wishItem));
   };
 
   return (
@@ -73,7 +83,9 @@ const Card: React.FC<CardProps> = ({ product }) => {
             Product Details
           </p>
         </a>
-        <a className="bg-yellow-400 p-1 relative group/icon" href="">
+        <button
+          onClick={handleAddToWish}
+          className="bg-yellow-400 p-1 relative group/icon">
           <svg
             className="fill-black"
             xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +97,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
           <p className="absolute invisible group-hover/icon:visible right-8 top-2 bottom-0 text-xs 2xl:text-md text-center w-32 my-auto text-black font-semibold">
             Add to Wishlist
           </p>
-        </a>
+        </button>
         <a className="bg-yellow-400 p-1 relative group/icon" href="">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { Product } from "../definitions";
 import { CartItem, CartState } from "../definitions";
 
 const storedCartItems =
   typeof window !== "undefined" ? localStorage.getItem("cartItems") : null;
+
 const initialState: CartState = {
   cartItems: storedCartItems ? JSON.parse(storedCartItems) : [],
   cartTotalQuantity: 0,
@@ -51,25 +51,16 @@ const cartSlice = createSlice({
         (item) => item.id === action.payload.id
       );
 
-      if (state.cartItems[itemIndex].cartQuantity > 1) {
-        state.cartItems[itemIndex].cartQuantity -= 1;
-
-        toast.info(`Removed one ${action.payload.name} from Cart`, {
-          position: "bottom-left",
-        });
-      } else if (state.cartItems[itemIndex].cartQuantity === 1) {
-        const nextCartItems = state.cartItems.filter(
-          (item) => item.id !== action.payload.id
-        );
-
-        state.cartItems = nextCartItems;
-
-        toast.error("Product removed from cart", {
-          position: "bottom-left",
-        });
+      if (itemIndex !== -1 && state.cartItems[itemIndex].cartQuantity > 1) {
+        state.cartItems = [
+          ...state.cartItems.slice(0, itemIndex),
+          {
+            ...state.cartItems[itemIndex],
+            cartQuantity: state.cartItems[itemIndex].cartQuantity - 1,
+          },
+          ...state.cartItems.slice(itemIndex + 1),
+        ];
       }
-
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     clearCart(state, action) {
       state.cartItems = [];

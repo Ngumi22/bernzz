@@ -54,3 +54,23 @@ export interface CartState {
   cartTotalQuantity: number;
   cartTotalAmount: number;
 }
+export interface wishItem {
+  id: number; // Unique identifier for the wish item
+  name: string; // Name of the product
+  description: string; // Description of the product
+  brand: string; // Brand of the product
+  price: number; // Price of the product
+  category: string; // Category of the product
+  image: string; // URL of the product image
+  discountPercentage: number; // Discount percentage for the product
+  new: boolean; // Indicates if the product is new
+  bestSeller: boolean; // Indicates if the product is a best seller
+  rating: number; // Rating of the product
+  stock: number; // Stock quantity of the product
+  wishQuantity: number; // Quantity of the product in the wish
+}
+export interface wishState {
+  wishItems: wishItem[];
+  wishTotalQuantity: number;
+  wishTotalAmount: number;
+}

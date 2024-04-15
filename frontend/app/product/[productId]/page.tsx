@@ -1,7 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetProductByIdQuery } from "@/lib/productsApi";
 import Image from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { motion } from "framer-motion";
 
 interface IParams {
   productId?: string;
@@ -15,6 +17,29 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
     isLoading,
   } = useGetProductByIdQuery(productId || "");
 
+  const [selectedImage, setSelectedImage] = useState(product?.image || "");
+
+  useEffect(() => {
+    // Update selectedImage when product.image changes
+    setSelectedImage(product?.image || "");
+  }, [product]);
+
+  // Function to handle thumbnail click
+  const handleThumbnailClick = (thumbnail: string) => {
+    setSelectedImage(thumbnail);
+  };
+
+  const [quantity, setQuantity] = useState(1);
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
   useEffect(() => {
     // Fetch product data when the component mounts or when productId changes
     if (productId) {
@@ -41,51 +66,23 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
           <Image
             height={400}
             width={400}
-            className="w-full"
-            src={product.image}
+            className="w-full h-[20rem] object-contain overflow-hidden"
+            src={selectedImage}
             alt={product.name}
           />
 
           <div className="mt-3 grid grid-cols-4 gap-4">
-            <div>
-              <Image
-                height={100}
-                width={100}
-                className="cursor-pointer object-contain"
-                src={product.thumbnails[0]}
-                alt={product.name}
-              />
-            </div>
-
-            <div>
-              <Image
-                height={100}
-                width={100}
-                className="cursor-pointer"
-                src={product.thumbnails[1]}
-                alt={product.name}
-              />
-            </div>
-
-            <div>
-              <Image
-                height={100}
-                width={100}
-                className="cursor-pointer"
-                src={product.thumbnails[2]}
-                alt={product.name}
-              />
-            </div>
-
-            <div>
-              <Image
-                height={100}
-                width={100}
-                className="cursor-pointer"
-                src={product.thumbnails[3]}
-                alt={product.name}
-              />
-            </div>
+            {product.thumbnails.map((thumbnail: string, index: number) => (
+              <div key={index} onClick={() => handleThumbnailClick(thumbnail)}>
+                <Image
+                  height={200}
+                  width={200}
+                  className="cursor-pointer h-[8rem] overflow-hidden object-contain"
+                  src={thumbnail}
+                  alt={product.name}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -188,13 +185,17 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
             <p className="pb-2 text-xs text-gray-500">Quantity</p>
 
             <div className="flex">
-              <button className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
+              <button
+                onClick={handleDecrease}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
                 &minus;
               </button>
               <div className="flex h-8 w-8 cursor-text items-center justify-center border-t border-b active:ring-gray-500">
-                1
+                {quantity}
               </div>
-              <button className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
+              <button
+                onClick={handleIncrease}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
                 &#43;
               </button>
             </div>
