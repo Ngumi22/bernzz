@@ -26,7 +26,7 @@ const wishSlice = createSlice({
         toast.info(
           `Added another ${state.wishItems[itemIndex].name} to Wishlist`,
           {
-            position: "top-left",
+            position: "bottom-right",
           }
         );
       } else {
@@ -35,7 +35,7 @@ const wishSlice = createSlice({
         toast.success(
           `Added ${action.payload.name} to your Wishlist successfully`,
           {
-            position: "top-left",
+            position: "bottom-right",
           }
         );
       }
@@ -50,7 +50,7 @@ const wishSlice = createSlice({
       state.wishItems = nextwishItems;
       localStorage.setItem("wishItems", JSON.stringify(state.wishItems));
       toast.error(`Removed ${action.payload.name} from wishlist successfully`, {
-        position: "top-left",
+        position: "bottom-right",
       });
     },
     decreaseWish: (state, action: PayloadAction<wishItem>) => {
@@ -62,7 +62,7 @@ const wishSlice = createSlice({
         state.wishItems[itemIndex].wishQuantity -= 1;
 
         toast.info(`Removed one ${action.payload.name} from wishlist`, {
-          position: "top-left",
+          position: "bottom-right",
         });
       } else if (state.wishItems[itemIndex].wishQuantity === 1) {
         const nextwishItems = state.wishItems.filter(
@@ -72,7 +72,7 @@ const wishSlice = createSlice({
         state.wishItems = nextwishItems;
 
         toast.error("Product removed from wishlist", {
-          position: "top-left",
+          position: "bottom-right",
         });
       }
 
@@ -81,7 +81,7 @@ const wishSlice = createSlice({
     clearWish(state, action) {
       state.wishItems = [];
       localStorage.setItem("wishItems", JSON.stringify(state.wishItems));
-      toast.error("wishlist cleared", { position: "top-left" });
+      toast.error("Wishlist cleared", { position: "bottom-right" });
     },
     getTotals: (state) => {
       let { total, quantity } = state.wishItems.reduce(

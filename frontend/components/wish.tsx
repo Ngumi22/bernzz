@@ -49,7 +49,7 @@ export default function Wish() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[20rem] mr-5">
         <DropdownMenuLabel className="text-center font-semibold text-xl">
-          Shopping Bag
+          Your Wishlist
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <ScrollArea className="h-[25rem] rounded-md p-4">

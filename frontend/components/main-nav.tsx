@@ -63,17 +63,6 @@ export default function MainNav() {
             </div>
             <div className="hidden md:flex lg:mx-4">
               <form className="flex flex-row">
-                <select
-                  id="pricingType"
-                  name="pricingType"
-                  className="h-10 md:px-2 py-0 md:py-1 tracking-wider text-black">
-                  <option value="All" defaultValue="All">
-                    All
-                  </option>
-                  <option value="Freemium">Freemium</option>
-                  <option value="Free">Free</option>
-                  <option value="Paid">Paid</option>
-                </select>
                 <div className="flex text-black">
                   <input
                     type="text"
@@ -82,7 +71,7 @@ export default function MainNav() {
                   />
                   <button
                     type="submit"
-                    className="bg-yellow-500 text-white rounded-r px-2 py-0 md:py-1">
+                    className="bg-yellow-500 text-white px-8 py-0 md:py-1">
                     Search
                   </button>
                 </div>
@@ -112,26 +101,15 @@ export default function MainNav() {
             </div>
             <div className="md:hidden mx-4">
               <form className="flex flex-row">
-                <select
-                  id="pricingType"
-                  name="pricingType"
-                  className="h-10 md:px-3 py-0 md:py-1 tracking-wider text-black">
-                  <option value="All" defaultValue="All">
-                    All
-                  </option>
-                  <option value="Freemium">Freemium</option>
-                  <option value="Free">Free</option>
-                  <option value="Paid">Paid</option>
-                </select>
                 <div className="flex text-black">
                   <input
                     type="text"
                     placeholder="I'm looking for..."
-                    className="w-40 md:w-80 px-3 h-10"
+                    className="w-60 md:w-80 px-3 h-10"
                   />
                   <button
                     type="submit"
-                    className="bg-yellow-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">
+                    className="bg-yellow-500 text-white px-4 md:px-3 py-0 md:py-1">
                     Search
                   </button>
                 </div>

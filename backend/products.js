@@ -15,6 +15,7 @@ const products = [
     category: "Networking",
     use: "business",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 2,
@@ -31,6 +32,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Phone",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 3,
@@ -47,6 +49,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Computer",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 4,
@@ -63,6 +66,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Accessory",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 5,
@@ -79,6 +83,7 @@ const products = [
     category: "Laptop",
     use: "gaming",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 6,
@@ -95,22 +100,24 @@ const products = [
     category: "Desktop",
     use: "coding",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 7,
-    name: "Redmi Pro",
+    name: "Redmi Pro 4",
     description:
       "RedMi inspiron 15-3583 Intel celeron 4205U 14 Inch 4k LCD Display",
     brand: "RedMi",
     price: 800,
     new: true,
-    discountPercentage: 50,
+    discountPercentage: 40,
     rating: 4.59,
-    stock: 94,
+    stock: 0,
     bestSeller: true,
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Printer",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 8,
@@ -126,6 +133,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Printer",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 9,
@@ -142,6 +150,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Networking",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 10,
@@ -157,6 +166,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Monitor",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 11,
@@ -172,6 +182,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Phone",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 12,
@@ -188,6 +199,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Phone",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 13,
@@ -203,6 +215,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Computer",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 14,
@@ -218,6 +231,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Monitor",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 15,
@@ -234,6 +248,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Phone",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
   {
     id: 16,
@@ -250,6 +265,7 @@ const products = [
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Phone",
     image: "/omen.png",
+    sku: "XZBKSER23"
   },
 ];
 module.exports = products;

@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Feature() {
   return (
-    <section className="grid grid-cols-2 w-full md:grid-cols-4 content-center rounded-lg md:container md:my-4 my-4 px-8 md:gap-0 gap-4">
-      <div className="flex justify-center items-center gap-x-2 h-20 w-full border md:p-2 border-gray-400 md:border-r-0">
+    <section className="grid grid-cols-1 w-full gap-11 h-auto">
+      <div className="flex justify-center items-center gap-x-2 h-20 border md:p-2 border-gray-400">
         <svg
           className="fill-yellow-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@ export default function Feature() {
 
         <p className="font-semibold text-sm">1 year Warranty</p>
       </div>
-      <div className="flex justify-center items-center gap-x-2 h-20 w-full border md:p-2 border-gray-400 md:border-r-0">
+      <div className="flex justify-center items-center gap-x-2 h-20 border md:p-2 border-gray-400">
         <svg
           className="fill-yellow-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@ export default function Feature() {
         </svg>
         <p className="font-semibold text-sm">Free Delivery</p>
       </div>
-      <div className="flex justify-center items-center gap-x-2 h-20 w-full border md:p-2 border-gray-400 md:border-r-0">
+      <div className="flex justify-center items-center gap-x-2 h-20 border md:p-2 border-gray-400">
         <svg
           className="fill-yellow-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ export default function Feature() {
         </svg>
         <p className="font-semibold text-sm">24/7 Support</p>
       </div>
-      <div className="flex justify-center items-center gap-x-2 h-20 w-full border md:p-2 border-gray-400">
+      <div className="flex justify-center items-center gap-x-2 h-20 border md:p-2 border-gray-400">
         <svg
           className="fill-yellow-500"
           xmlns="http://www.w3.org/2000/svg"

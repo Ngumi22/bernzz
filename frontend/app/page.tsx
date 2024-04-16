@@ -21,7 +21,7 @@ export default function Home() {
       <ToastContainer />
       <MiniNav />
       <Hero />
-      <Feature />
+
       <WeeklyDeals />
       <Banner1 />
       <ShopByBrand />

@@ -113,9 +113,11 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
             </div>
           </div>
 
-          <p className="mt-5 font-bold">
+          <p className="flex mt-5 font-bold">
             Availability:{" "}
-            <span className="text-green-600">{product.stock} in Stock</span>
+            <span className="text-green-600 ml-2">
+              {product.stock > 1 ? <p>In Stock</p> : <p>Sorry out of stock</p>}
+            </span>
           </p>
           <p className="font-bold">
             Brand: <span className="font-normal">{product.brand}</span>
@@ -124,62 +126,33 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
             Category: <span className="font-normal">{product.category}</span>
           </p>
           <p className="font-bold">
-            SKU: <span className="font-normal">BE45VGTRK</span>
+            SKU: <span className="font-normal">{product.sku}</span>
           </p>
 
-          <div className="flex justify-start items-center mt-4">
-            <div className="text-4xl font-bold text-violet-900">
-              KSH
-              <span>
-                {product.price -
-                  (product.price * product.discountPercentage) / 100}
-              </span>
+          {product.discountPercentage > 0 ? (
+            <div className="flex justify-start items-center mt-4">
+              <div className="flex gap-1 text-2xl font-bold text-violet-900">
+                <p>Price: </p>
+                KSH
+                <span>
+                  {product.price -
+                    (product.price * product.discountPercentage) / 100}
+                </span>
+              </div>
+              <p className="text-lg text-red-500 line-through font-bold flex pl-2">
+                <span className="pl-1">KSH {product.price}</span>
+              </p>
             </div>
-            <p className="text-lg text-red-500 line-through font-bold flex pl-4">
+          ) : (
+            <div className="text-2xl text-violet-900 font-bold flex mt-4">
+              Price:
               <span className="pl-2">KSH {product.price}</span>
-            </p>
-          </div>
-
-          <p className="pt-5 text-sm leading-5 text-gray-500">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem
-            exercitationem voluptate sint eius ea assumenda provident eos
-            repellendus qui neque! Velit ratione illo maiores voluptates commodi
-            eaque illum, laudantium non!
-          </p>
-
-          <div className="mt-6">
-            <p className="pb-2 text-xs text-gray-500">Size</p>
-
-            <div className="flex gap-1">
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
-                XS
-              </div>
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
-                S
-              </div>
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
-                M
-              </div>
-
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
-                L
-              </div>
-
-              <div className="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500">
-                XL
-              </div>
             </div>
-          </div>
+          )}
 
-          <div className="mt-6">
-            <p className="pb-2 text-xs text-gray-500">Color</p>
-
-            <div className="flex gap-1">
-              <div className="h-8 w-8 cursor-pointer border border-white bg-gray-600 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500"></div>
-              <div className="h-8 w-8 cursor-pointer border border-white bg-violet-900 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500"></div>
-              <div className="h-8 w-8 cursor-pointer border border-white bg-red-900 focus:ring-2 focus:ring-gray-500 active:ring-2 active:ring-gray-500"></div>
-            </div>
-          </div>
+          <ul>
+            <li>Specs</li>
+          </ul>
 
           <div className="mt-6">
             <p className="pb-2 text-xs text-gray-500">Quantity</p>
