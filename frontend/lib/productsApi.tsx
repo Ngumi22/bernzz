@@ -22,6 +22,10 @@ export const productsApi = createApi({
       query: (id) => `products/${id}`, //get id
       keepUnusedDataFor: 5,
     }),
+    getProductByName: builder.query({
+      query: (name) => `products/${name}`, //get id
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 

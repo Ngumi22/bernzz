@@ -81,9 +81,19 @@ const products = [
     bestSeller: true,
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Laptop",
-    use: "gaming",
+    use: "Gaming, Coding, DJing",
     image: "/omen.png",
-    sku: "XZBKSER23"
+    sku: "XZBKSER23",
+    display: "15.6-inch Full HD (1920 x 1080 pixels)",
+    processor: "Intel Core i5-1235U dual-core processor (1.3GHz base, up to 3.3GHz with Intel Turbo Boost)",
+    memory: "8GB DDR4 RAM",
+    storage: "512GB SSD",
+    graphics: "Integrated Intel UHD Graphics",
+    os: "Windows 10 Home",
+    connectivity: `Wi - Fi 5(802.11ac), Bluetooth`,
+    ports: "USB Type- A, USB Type - C, HDMI, headphone / microphone combo jack, multi - format card reader",
+    battery: "Long - lasting battery for extended use",
+    dimensions: "Slim and lightweight design for portability"
   },
   {
     id: 6,
@@ -98,7 +108,6 @@ const products = [
     bestSeller: true,
     thumbnails: ["/p1.jpg", "/omen.png", "/omen.png", "/sam.png"],
     category: "Desktop",
-    use: "coding",
     image: "/omen.png",
     sku: "XZBKSER23"
   },

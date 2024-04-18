@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useGetProductByIdQuery } from "@/lib/productsApi";
 import Image from "next/image";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { motion } from "framer-motion";
 
 interface IParams {
   productId?: string;
@@ -151,7 +149,54 @@ const Product: React.FC<{ params: IParams }> = ({ params }) => {
           )}
 
           <ul>
-            <li>Specs</li>
+            {product.category == "Laptop" ? (
+              <li className="flex flex-col justify-center">
+                <p className="font-bold text-sm italic">
+                  Display:{" "}
+                  <span className="font-normal">{product.display}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Processor:{" "}
+                  <span className="font-normal">{product.processor}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Memory: <span className="font-normal">{product.memory}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Storage:{" "}
+                  <span className="font-normal">{product.storage}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Graphics:{" "}
+                  <span className="font-normal">{product.graphics}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Operating System:{" "}
+                  <span className="font-normal">{product.os}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Connectivity:{" "}
+                  <span className="font-normal">{product.connectivity}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Ports: <span className="font-normal">{product.ports}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Battery Life:{" "}
+                  <span className="font-normal">{product.battery}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Dimensions:{" "}
+                  <span className="font-normal">{product.dimensions}</span>
+                </p>
+                <p className="font-bold text-sm italic">
+                  Can be Used For:{" "}
+                  <span className="font-normal">{product.use}</span>
+                </p>
+              </li>
+            ) : (
+              <li>Others</li>
+            )}
           </ul>
 
           <div className="mt-6">
