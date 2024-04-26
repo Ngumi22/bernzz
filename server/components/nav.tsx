@@ -10,38 +10,38 @@ export default function Nav() {
     <header className="sticky top-0 flex h-24 items-center gap-4 border-b bg-background px-4 md:px-6 z-40">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="/"
+          href="/dashboard"
           className="flex items-center gap-2 text-lg font-semibold md:text-base">
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <Link
-          href="/"
+          href="/dashboard"
           className="text-foreground transition-colors hover:text-foreground">
           Dashboard
         </Link>
         <Link
-          href="/Orders"
+          href="/dashboard/orders"
           className="text-muted-foreground transition-colors hover:text-foreground">
           Orders
         </Link>
         <Link
-          href="/Products"
+          href="/dashboard/products"
           className="text-muted-foreground transition-colors hover:text-foreground">
           Products
         </Link>
         <Link
-          href="/Customers"
+          href="/dashboard/customers"
           className="text-muted-foreground transition-colors hover:text-foreground">
           Customers
         </Link>
         <Link
-          href="/Analytics"
+          href="/dashboard/analytics"
           className="text-muted-foreground transition-colors hover:text-foreground">
           Analytics
         </Link>
         <Link
-          href="/Settings"
+          href="/dashboard/settings"
           className="text-muted-foreground transition-colors hover:text-foreground">
           Settings
         </Link>
@@ -56,36 +56,36 @@ export default function Nav() {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="/"
+              href="/dashboard"
               className="flex items-center gap-2 text-lg font-semibold">
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link href="/" className="hover:text-foreground">
+            <Link href="/dashboard" className="hover:text-foreground">
               Dashboard
             </Link>
             <Link
-              href="/Orders"
+              href="/dashboard/orders"
               className="text-muted-foreground hover:text-foreground">
               Orders
             </Link>
             <Link
-              href="/Products"
+              href="/dashboard/products"
               className="text-muted-foreground hover:text-foreground">
               Products
             </Link>
             <Link
-              href="/Customers"
+              href="/dashboard/customers"
               className="text-muted-foreground hover:text-foreground">
               Customers
             </Link>
             <Link
-              href="/Analytics"
+              href="/dashboard/analytics"
               className="text-muted-foreground hover:text-foreground">
               Analytics
             </Link>
             <Link
-              href="/Settings"
+              href="/dashboard/settings"
               className="text-muted-foreground hover:text-foreground">
               Settings
             </Link>
