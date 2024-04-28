@@ -1,6 +1,7 @@
+"use server";
 import mysql from "mysql2/promise";
 
-const getProducts = async (query: string, data: any[]) => {
+const executeQuery = async (query: any, data: any) => {
   try {
     const db = await mysql.createConnection({
       host: "127.0.0.1",
@@ -11,13 +12,13 @@ const getProducts = async (query: string, data: any[]) => {
     });
 
     const [result] = await db.execute(query, data);
-    db.end(); // Close the connection
+
+    db.end();
 
     return result;
   } catch (error) {
-    console.error("Error retrieving products:", error);
-    return [];
+    return error;
   }
 };
 
-export default getProducts;
+export default executeQuery;

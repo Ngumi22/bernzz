@@ -11,38 +11,46 @@ export default function Nav() {
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base">
+          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+        >
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <Link
           href="/dashboard"
-          className="text-foreground transition-colors hover:text-foreground">
+          className="text-foreground transition-colors hover:text-foreground"
+        >
           Dashboard
         </Link>
-        <Link
-          href="/dashboard/orders"
-          className="text-muted-foreground transition-colors hover:text-foreground">
-          Orders
-        </Link>
+
         <Link
           href="/dashboard/products"
-          className="text-muted-foreground transition-colors hover:text-foreground">
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
           Products
         </Link>
         <Link
+          href="/dashboard/orders"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Orders
+        </Link>
+        <Link
           href="/dashboard/customers"
-          className="text-muted-foreground transition-colors hover:text-foreground">
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
           Customers
         </Link>
         <Link
           href="/dashboard/analytics"
-          className="text-muted-foreground transition-colors hover:text-foreground">
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
           Analytics
         </Link>
         <Link
           href="/dashboard/settings"
-          className="text-muted-foreground transition-colors hover:text-foreground">
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
           Settings
         </Link>
       </nav>
@@ -57,7 +65,8 @@ export default function Nav() {
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-lg font-semibold">
+              className="flex items-center gap-2 text-lg font-semibold"
+            >
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
@@ -66,27 +75,32 @@ export default function Nav() {
             </Link>
             <Link
               href="/dashboard/orders"
-              className="text-muted-foreground hover:text-foreground">
+              className="text-muted-foreground hover:text-foreground"
+            >
               Orders
             </Link>
             <Link
               href="/dashboard/products"
-              className="text-muted-foreground hover:text-foreground">
+              className="text-muted-foreground hover:text-foreground"
+            >
               Products
             </Link>
             <Link
               href="/dashboard/customers"
-              className="text-muted-foreground hover:text-foreground">
+              className="text-muted-foreground hover:text-foreground"
+            >
               Customers
             </Link>
             <Link
               href="/dashboard/analytics"
-              className="text-muted-foreground hover:text-foreground">
+              className="text-muted-foreground hover:text-foreground"
+            >
               Analytics
             </Link>
             <Link
               href="/dashboard/settings"
-              className="text-muted-foreground hover:text-foreground">
+              className="text-muted-foreground hover:text-foreground"
+            >
               Settings
             </Link>
           </nav>

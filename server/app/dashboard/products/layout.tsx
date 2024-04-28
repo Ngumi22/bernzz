@@ -1,3 +1,5 @@
+import ProductDashboard from "./page";
+
 export default function ProductLayout({
   children,
 }: Readonly<{

@@ -1,5 +1,5 @@
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
-  currency: "USD",
+  currency: "KSH",
   style: "currency",
   minimumFractionDigits: 0,
 });
