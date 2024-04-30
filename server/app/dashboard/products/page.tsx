@@ -80,6 +80,24 @@ const ProductDashboard = (query: any, data: any) => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const result = await deleteProduct(id);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      const result = await editProduct(id, updatedData);
+      fetchData(); // Refresh the product list after update
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -151,7 +169,7 @@ const ProductDashboard = (query: any, data: any) => {
                         <TableHead>Status</TableHead>
                         <TableHead>Price</TableHead>
                         <TableHead className="hidden md:table-cell">
-                          Total Sales
+                          Quantity
                         </TableHead>
                         <TableHead className="hidden md:table-cell">
                           Created at
@@ -163,7 +181,7 @@ const ProductDashboard = (query: any, data: any) => {
                     </TableHeader>
                     <TableBody>
                       {product?.map((product: any) => (
-                        <TableRow key={product.key}>
+                        <TableRow key={product.id}>
                           <TableCell className="hidden sm:table-cell">
                             <img
                               alt="Product image"
@@ -177,7 +195,7 @@ const ProductDashboard = (query: any, data: any) => {
                             {product.productName}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline">{product.status}</Badge>
+                            <Badge variant="outline">{product.id}</Badge>
                           </TableCell>
                           <TableCell>{product.price}</TableCell>
                           <TableCell className="hidden md:table-cell">
@@ -192,8 +210,7 @@ const ProductDashboard = (query: any, data: any) => {
                                 <Button
                                   aria-haspopup="true"
                                   size="icon"
-                                  variant="ghost"
-                                >
+                                  variant="ghost">
                                   <MoreHorizontal className="h-4 w-4" />
                                   <span className="sr-only">Toggle menu</span>
                                 </Button>
@@ -201,11 +218,22 @@ const ProductDashboard = (query: any, data: any) => {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuItem>
-                                  <Link href="/dashboard/products/edit-product">
+                                  <Link
+                                    href="/dashboard/products/edit-product"
+                                    onClick={() =>
+                                      handleUpdate(product.id, {
+                                        productName: "New Product Name",
+                                        price: 99.99,
+                                        quantity: 10,
+                                      })
+                                    }>
                                     Edit
                                   </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(product.id)}>
+                                  Delete
+                                </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
