@@ -2,31 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  File,
-  Home,
-  LineChart,
-  ListFilter,
-  MoreHorizontal,
-  Package,
-  Package2,
-  PanelLeft,
-  PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
-  Users2,
-} from "lucide-react";
+import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -54,47 +33,51 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import executeQuery from "@/lib/data";
 
 import React, { useEffect, useState } from "react";
+import {
+  deleteProduct,
+  getAllProducts,
+  editProduct,
+  getProductById,
+} from "@/app/api/addProduct";
+import { ToastAction } from "@/components/ui/toast";
 
-const ProductDashboard = (query: any, data: any) => {
+const ProductDashboard = () => {
+  const { toast } = useToast();
+
   const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {
-    fetchData();
+    handleGetAllProducts();
   }, []);
 
-  const fetchData = async () => {
+  const handleGetAllProducts = async () => {
     try {
-      const query = "select * from products";
-      const result = await executeQuery(query, []);
+      const result = await getAllProducts();
       setProduct(result);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (productId: any) => {
     try {
-      const result = await deleteProduct(id);
-      fetchData();
+      const response = await deleteProduct(productId);
+      const { message } = response;
+      toast({
+        description: message,
+      });
+      handleGetAllProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
-    }
-  };
 
-  const handleUpdate = async (id, updatedData) => {
-    try {
-      const result = await editProduct(id, updatedData);
-      fetchData(); // Refresh the product list after update
-    } catch (error) {
-      console.error("Error updating product:", error);
+      toast({
+        description: "Failed to delete product. Please try again later.",
+        action: <ToastAction altText="Click to undo">Undo</ToastAction>,
+      });
     }
   };
 
@@ -150,7 +133,7 @@ const ProductDashboard = (query: any, data: any) => {
                 </Link>
               </div>
             </div>
-            <TabsContent value="all">
+            <TabsContent className="" value="all">
               <Card x-chunk="dashboard-06-chunk-0">
                 <CardHeader>
                   <CardTitle>Products</CardTitle>
@@ -169,7 +152,7 @@ const ProductDashboard = (query: any, data: any) => {
                         <TableHead>Status</TableHead>
                         <TableHead>Price</TableHead>
                         <TableHead className="hidden md:table-cell">
-                          Quantity
+                          Total Sales
                         </TableHead>
                         <TableHead className="hidden md:table-cell">
                           Created at
@@ -181,7 +164,7 @@ const ProductDashboard = (query: any, data: any) => {
                     </TableHeader>
                     <TableBody>
                       {product?.map((product: any) => (
-                        <TableRow key={product.id}>
+                        <TableRow key={product.productId}>
                           <TableCell className="hidden sm:table-cell">
                             <img
                               alt="Product image"
@@ -195,14 +178,14 @@ const ProductDashboard = (query: any, data: any) => {
                             {product.productName}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline">{product.id}</Badge>
+                            <Badge variant="outline">{product.productId}</Badge>
                           </TableCell>
                           <TableCell>{product.price}</TableCell>
                           <TableCell className="hidden md:table-cell">
                             {product.quantity}
                           </TableCell>
                           <TableCell className="hidden md:table-cell">
-                            2023-07-12 10:42 AM
+                            {product.createdAt.toLocaleString()}
                           </TableCell>
                           <TableCell>
                             <DropdownMenu>
@@ -210,7 +193,8 @@ const ProductDashboard = (query: any, data: any) => {
                                 <Button
                                   aria-haspopup="true"
                                   size="icon"
-                                  variant="ghost">
+                                  variant="ghost"
+                                >
                                   <MoreHorizontal className="h-4 w-4" />
                                   <span className="sr-only">Toggle menu</span>
                                 </Button>
@@ -219,21 +203,21 @@ const ProductDashboard = (query: any, data: any) => {
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuItem>
                                   <Link
-                                    href="/dashboard/products/edit-product"
-                                    onClick={() =>
-                                      handleUpdate(product.id, {
-                                        productName: "New Product Name",
-                                        price: 99.99,
-                                        quantity: 10,
-                                      })
-                                    }>
+                                    href={`/dashboard/products/edit-product?id=${product.productId}`}
+                                    passHref
+                                  >
                                     Edit
                                   </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDelete(product.id)}>
-                                  Delete
-                                </DropdownMenuItem>
+                                <div className="">
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      handleDelete(product.productId)
+                                    }
+                                  >
+                                    Delete
+                                  </DropdownMenuItem>
+                                </div>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
