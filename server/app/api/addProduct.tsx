@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import mysql from "mysql2/promise";
-import { z } from "zod";
 
 async function connectToDatabase() {
   const sql = await mysql.createPool({

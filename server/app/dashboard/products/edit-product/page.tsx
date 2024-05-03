@@ -100,7 +100,7 @@ export default function Dashboard() {
     try {
       const result = await editProduct(productId, updatedData);
       fetchData();
-      console.log(`Product with ID ${productId} updated successfully.`);
+      console.log(result);
     } catch (error) {
       console.error("Error updating product:", error);
     }
