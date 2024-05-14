@@ -41,7 +41,6 @@ import {
   deleteProduct,
   getAllProducts,
   editProduct,
-  getProductById,
 } from "@/app/api/addProduct";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -66,11 +65,8 @@ const ProductDashboard = () => {
   const handleDelete = async (productId: any) => {
     try {
       const response = await deleteProduct(productId);
-      const { message } = response;
-      toast({
-        description: message,
-      });
-      handleGetAllProducts();
+
+      handleGetAllProducts(response);
     } catch (error) {
       console.error("Error deleting product:", error);
 
@@ -193,8 +189,7 @@ const ProductDashboard = () => {
                                 <Button
                                   aria-haspopup="true"
                                   size="icon"
-                                  variant="ghost"
-                                >
+                                  variant="ghost">
                                   <MoreHorizontal className="h-4 w-4" />
                                   <span className="sr-only">Toggle menu</span>
                                 </Button>
@@ -204,8 +199,7 @@ const ProductDashboard = () => {
                                 <DropdownMenuItem>
                                   <Link
                                     href={`/dashboard/products/edit-product?id=${product.productId}`}
-                                    passHref
-                                  >
+                                    passHref>
                                     Edit
                                   </Link>
                                 </DropdownMenuItem>
@@ -213,8 +207,7 @@ const ProductDashboard = () => {
                                   <DropdownMenuItem
                                     onClick={() =>
                                       handleDelete(product.productId)
-                                    }
-                                  >
+                                    }>
                                     Delete
                                   </DropdownMenuItem>
                                 </div>

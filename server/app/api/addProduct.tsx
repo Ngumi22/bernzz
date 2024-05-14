@@ -17,95 +17,70 @@ async function connectToDatabase() {
   });
 }
 
-export async function getAllProducts() {
+async function executeQuery<
+  T extends [mysql.RowDataPacket[], mysql.ResultSetHeader]
+>(query: string, params: any[]): Promise<T> {
+  const pool = await connectToDatabase();
+  const connection = await pool.getConnection();
   try {
-    const pool = await connectToDatabase();
-    const connection = await pool.getConnection();
-
-    const [products] = await connection.query("SELECT * FROM products");
-    connection.release();
-
-    return products;
+    const [results] = await connection.query<T>(query, params);
+    return results;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
+    console.error("Database error:", error);
+    throw new Error("An unexpected error occurred. Please try again later.");
+  } finally {
+    connection.release();
   }
 }
 
-export async function getAllCategories() {
+export async function getAllProducts() {
+  return executeQuery("SELECT * FROM products", []);
+}
+
+export async function getAllCategories(): Promise<
+  { id: number; name: string }[]
+> {
   try {
     const pool = await connectToDatabase();
     const connection = await pool.getConnection();
-
-    const [categories] = await connection.query("SELECT * FROM categories");
+    const [categories] = await connection.query<mysql.RowDataPacket[]>(
+      "SELECT id, name FROM categories"
+    );
     connection.release();
-
-    return categories;
+    return categories as { id: number; name: string }[];
   } catch (error) {
     console.error("Error fetching categories:", error);
     throw error;
   }
 }
 
-// Function to handle generic database errors
-async function handleDatabaseError(error: any) {
-  console.error("Database error:", error);
-  throw new Error("An unexpected error occurred. Please try again later.");
-}
-
 // Function to add a category
 export async function addCategory(categoryName: string) {
-  try {
-    // Check if the category name meets the criteria
-    if (!/^[a-zA-Z]{3,}$/.test(categoryName)) {
-      // If the category name doesn't meet the criteria, return an error message
-      return {
-        message:
-          "Category name must contain at least 3 letters and only letters.",
-      };
-    }
-
-    const pool = await connectToDatabase();
-    const connection = await pool.getConnection();
-
-    // Check if the category already exists
-    const [existingCategory] = await connection.query(
-      "SELECT * FROM categories WHERE name = ?",
-      [categoryName]
-    );
-
-    if (Array.isArray(existingCategory) && existingCategory.length > 0) {
-      // Category already exists, return an error message
-      return { message: `Category "${categoryName}" already exists.` };
-    } else {
-      // Category does not exist, proceed with insertion
-      const sql = "INSERT INTO categories (name) VALUES (?)";
-      await connection.query(sql, [categoryName]);
-      connection.release();
-
-      return { message: `Category "${categoryName}" added successfully.` };
-    }
-  } catch (error) {
-    await handleDatabaseError(error);
+  if (!/^[a-zA-Z]{3,}$/.test(categoryName)) {
+    return {
+      message:
+        "Category name must contain at least 3 letters and only letters.",
+    };
   }
+
+  const existingCategory = await executeQuery(
+    "SELECT * FROM categories WHERE name = ?",
+    [categoryName]
+  );
+
+  if (existingCategory.length > 0) {
+    return { message: `Category "${categoryName}" already exists.` };
+  }
+
+  await executeQuery("INSERT INTO categories (name) VALUES (?)", [
+    categoryName,
+  ]);
+  return { message: `Category "${categoryName}" added successfully.` };
 }
 
-// Function to add a product
-export async function addProduct(state: { message: string }, formData: any) {
-  const sqlInsert =
-    "INSERT INTO products (sku, name, description, product_status_id, price, discount_percentage, category_id, quantity, taxable, CPU, RAM, Storage, Ports, Webcam, Connectivity, Processor, OperatingSystem, Weight, ScreenSize, CameraResolution, BatteryLife, PrintSpeed, WiFi, Copying, Scanning, PaperHandling, Consumables, PrinterSoftware, NetworkProtocol, Interface, NetworkCompatibility, SIMCardSlot, WirelessConnectivity, MaxDevicesConnected, Battery, Security, Display, AccessControl, Compatibility, ViewableImageArea, AspectRatio, Contrast, Resolution, Cores, ProcessorFrequency, Memory, Graphics, PowerSupply, Dimensions, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-  const sqlUpdate = "UPDATE products SET quantity = quantity + 1 WHERE sku =?";
-
-  const imageFields = [
-    "main_image",
-    "thumbnail1",
-    "thumbnail2",
-    "thumbnail3",
-    "thumbnail4",
-    "thumbnail5",
-  ];
-  let imagePaths = [];
-
+export async function addProduct(
+  productData: any
+): Promise<{ message: string }> {
   try {
     const pool = await connectToDatabase();
     const connection = await pool.getConnection();
@@ -160,46 +135,89 @@ export async function addProduct(state: { message: string }, formData: any) {
       Graphics,
       PowerSupply,
       Dimensions,
-    } = formData;
+    } = productData;
 
-    for (let field of imageFields) {
-      const image = formData[field];
-      if (image) {
-        const imageType = field === "main_image" ? "main" : "thumbnail";
-        const imageData = image[0].buffer;
-        // Cast the result to any to bypass TypeScript's type checking temporarily
-        const [result] = (await connection.query(
-          "INSERT INTO product_images (product_sku, image_type, image_data) VALUES (?,?,?)",
-          [sku, imageType, imageData]
-        )) as any;
-        // Access the insertId from the ResultSetHeader
-        const insertId = result[0].insertId;
-        imagePaths.push({ [imageType]: insertId });
-      }
-    }
-
-    const [existingProduct] = await connection.query(
-      "SELECT * FROM products WHERE sku =?",
+    const [existingProduct] = await connection.query<mysql.RowDataPacket[]>(
+      "SELECT * FROM products WHERE sku = ?",
       [sku]
     );
 
-    if (Array.isArray(existingProduct) && existingProduct.length > 0) {
-      await connection.query(sqlUpdate, [sku]);
-      revalidatePath("/");
+    if (existingProduct.length > 0) {
+      await connection.query(
+        "UPDATE products SET quantity = quantity + ? WHERE sku = ?",
+        [quantity, sku]
+      );
+      connection.release();
       return {
         message: `Product with SKU ${sku} already exists. Quantity updated.`,
       };
     } else {
-      await connection.query(sqlInsert, [
+      const sql = `INSERT INTO products (
+        category_id,
         sku,
         name,
         description,
-        product_status_id,
         price,
-        discount_percentage,
-        category_id,
         quantity,
         taxable,
+        product_status_id,
+        discount_percentage,
+        CPU,
+        RAM,
+        Storage,
+        Ports,
+        Webcam,
+        Connectivity,
+        Processor,
+        OperatingSystem,
+        Weight,
+        ScreenSize,
+        CameraResolution,
+        BatteryLife,
+        PrintSpeed,
+        WiFi,
+        Copying,
+        Scanning,
+        PaperHandling,
+        Consumables,
+        PrinterSoftware,
+        NetworkProtocol,
+        Interface,
+        NetworkCompatibility,
+        SIMCardSlot,
+        WirelessConnectivity,
+        MaxDevicesConnected,
+        Battery,
+        Security,
+        Display,
+        AccessControl,
+        Compatibility,
+        ViewableImageArea,
+        AspectRatio,
+        Contrast,
+        Resolution,
+        Cores,
+        ProcessorFrequency,
+        Memory,
+        Graphics,
+        PowerSupply,
+        Dimensions,
+        created_at,
+        updated_at
+      ) VALUES (
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+      )`;
+
+      await connection.query(sql, [
+        category_id,
+        sku,
+        name,
+        description,
+        price,
+        quantity,
+        taxable,
+        product_status_id,
+        discount_percentage,
         CPU,
         RAM,
         Storage,
@@ -243,11 +261,12 @@ export async function addProduct(state: { message: string }, formData: any) {
         new Date(),
         new Date(),
       ]);
-      revalidatePath("/");
+      connection.release();
       return { message: `Product with SKU ${sku} added successfully.` };
     }
   } catch (error) {
-    await handleDatabaseError(error);
+    console.error("Error adding product:", error);
+    throw new Error("Failed to add product.");
   }
 }
 
@@ -256,56 +275,31 @@ export async function associateProductWithCategory(
   productId: number,
   categoryId: number
 ) {
-  try {
-    const pool = await connectToDatabase();
-    const connection = await pool.getConnection();
-
-    const sql =
-      "INSERT INTO product_categories (product_id, category_id) VALUES (?,?)";
-    await connection.query(sql, [productId, categoryId]);
-    connection.release();
-
-    return {
-      message: `Product with ID ${productId} associated with category ID ${categoryId} successfully.`,
-    };
-  } catch (error) {
-    await handleDatabaseError(error);
-  }
+  await executeQuery(
+    "INSERT INTO product_categories (product_id, category_id) VALUES (?,?)",
+    [productId, categoryId]
+  );
+  return {
+    message: `Product with ID ${productId} associated with category ID ${categoryId} successfully.`,
+  };
 }
 
 // Function to add a tag to a product
 export async function addTagToProduct(productId: number, tagName: string) {
-  try {
-    const pool = await connectToDatabase();
-    const connection = await pool.getConnection();
-
-    const sql = "INSERT INTO product_tags (product_id, tag_name) VALUES (?,?)";
-    await connection.query(sql, [productId, tagName]);
-    connection.release();
-
-    return {
-      message: `Tag "${tagName}" added to product ID ${productId} successfully.`,
-    };
-  } catch (error) {
-    await handleDatabaseError(error);
-  }
+  await executeQuery(
+    "INSERT INTO product_tags (product_id, tag_name) VALUES (?,?)",
+    [productId, tagName]
+  );
+  return {
+    message: `Tag "${tagName}" added to product ID ${productId} successfully.`,
+  };
 }
 
 // Function to delete a product
 export async function deleteProduct(productId: number) {
-  try {
-    const pool = await connectToDatabase();
-    const connection = await pool.getConnection();
-
-    const sql = "DELETE FROM products WHERE productId =?";
-    await connection.query(sql, [productId]);
-    connection.release();
-    revalidatePath("/");
-    console.log(`Product with ID ${productId} deleted successfully.`);
-    return { message: `Product with ID ${productId} deleted successfully.` };
-  } catch (error) {
-    await handleDatabaseError(error);
-  }
+  await executeQuery("DELETE FROM products WHERE productId = ?", [productId]);
+  revalidatePath("/");
+  return { message: `Product with ID ${productId} deleted successfully.` };
 }
 
 // Function to edit a product
@@ -313,19 +307,33 @@ export async function editProduct(
   productId: number,
   updatedData: Record<string, any>
 ) {
+  const { productName, price, quantity } = updatedData;
+  await executeQuery(
+    "UPDATE products SET productName = ?, price = ?, quantity = ? WHERE productId = ?",
+    [productName, price, quantity, productId]
+  );
+  revalidatePath("/");
+  return { message: `Product with ID ${productId} updated successfully.` };
+}
+
+export async function getCategoryById(
+  categoryId: number
+): Promise<{ id: number; name: string } | null> {
   try {
     const pool = await connectToDatabase();
     const connection = await pool.getConnection();
-
-    const { productName, price, quantity } = updatedData;
-
-    const query =
-      "UPDATE products SET productName =?, price =?, quantity =? WHERE productId =?";
-    await connection.query(query, [productName, price, quantity, productId]);
+    const [categories] = await connection.query<mysql.RowDataPacket[]>(
+      "SELECT id, name FROM categories WHERE id = ?",
+      [categoryId]
+    );
     connection.release();
-    revalidatePath("/");
-    return { message: `Product with ID ${productId} updated successfully.` };
+    if (categories.length > 0) {
+      return categories[0] as { id: number; name: string };
+    } else {
+      return null;
+    }
   } catch (error) {
-    await handleDatabaseError(error);
+    console.error("Error fetching category by ID:", error);
+    throw new Error("Failed to fetch category by ID.");
   }
 }
