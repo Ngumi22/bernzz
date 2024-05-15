@@ -14,40 +14,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addProduct, getAllCategories } from "@/app/api/addProduct"; // make sure this path is correct
+import {
+  addCategory,
+  addProduct,
+  getAllCategories,
+} from "@/app/api/addProduct";
 
 const initialState = {
   message: "",
 };
 
-interface Category {
-  id: number;
-  name: string;
-}
-
 export default function AddForm() {
   const { register, handleSubmit, reset } = useForm();
   const [state, setState] = useState(initialState);
-  const [categories, setCategories] = useState<Category[]>([]);
-
+  const [categoryState, setCategoryState] = useState(initialState);
   const form = useForm();
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await getAllCategories();
-        setCategories(result);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
+  const [category, setCategories] = useState<any>([]);
 
-    fetchCategories();
+  useEffect(() => {
+    handlegetAllCategories();
   }, []);
 
-  const handleProductSubmit = async (formData: any) => {
+  const handlegetAllCategories = async () => {
     try {
-      const result = await addProduct(formData);
+      const result = await getAllCategories();
+      setCategories(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCategorySubmit = async (formData: any) => {
+    try {
+      const result = await addCategory(formData.categoryName);
+      setCategoryState({ message: result.message });
+      reset();
+    } catch (error) {
+      setCategoryState({ message: "Failed to add Category" });
+    }
+  };
+
+  const handleProductSubmit = async (formData: any, state: any) => {
+    try {
+      const result = await addProduct(formData, state);
       setState({ message: result.message });
       reset();
     } catch (error) {
@@ -59,23 +69,70 @@ export default function AddForm() {
     <section className="container my-8">
       <Form {...form}>
         <form
+          onSubmit={handleSubmit(handleCategorySubmit)}
+          className="space-y-8">
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="categoryName">Category Name</Label>
+            <Input
+              {...register("categoryName")}
+              id="categoryName"
+              type="text"
+            />
+          </div>
+          <p>{categoryState.message}</p>
+          <Button type="submit">Add Category</Button>
+        </form>
+      </Form>
+
+      <Form {...form}>
+        <form
           onSubmit={handleSubmit(handleProductSubmit)}
           className="space-y-8">
           {[
             {
               label: "Category",
-              id: "category_id",
+              id: "categoryId",
               type: "select",
-              options: categories,
+              options: category.map((cat: any) => ({
+                id: cat.id,
+                label: cat.category_name,
+              })),
             },
             { label: "SKU", id: "sku" },
             { label: "Name", id: "name" },
             { label: "Description", id: "description" },
-            { label: "Price", id: "price" },
-            { label: "Quantity", id: "quantity" },
-            { label: "Taxable", id: "taxable" },
-            { label: "Product Status ID", id: "product_status_id" },
-            { label: "Discount Percentage", id: "discount_percentage" },
+            { label: "Price", id: "price", type: "number" },
+            { label: "Quantity", id: "quantity", type: "number" },
+            {
+              label: "Taxable",
+              id: "taxable",
+              type: "select",
+              options: [
+                { id: "yes", label: "Yes" },
+                { id: "no", label: "No" },
+              ],
+            },
+            {
+              label: "Product Status",
+              id: "product_status",
+              type: "select",
+              options: [
+                { id: "Active", label: "Active" },
+                { id: " Draft", label: "Draft" },
+                { id: "Archived", label: "Archived" },
+              ],
+            },
+            { label: "Image", id: "main_image", type: "file" },
+            { label: "Thumbnail 1", id: "thumbnail1", type: "file" },
+            { label: "Thumbnail 2", id: "thumbnail2", type: "file" },
+            { label: "Thumbnail 3", id: "thumbnail3", type: "file" },
+            { label: "Thumbnail 4", id: "thumbnail4", type: "file" },
+            { label: "Thumbnail 5", id: "thumbnail5", type: "file" },
+            {
+              label: "Discount Percentage",
+              id: "discount_percentage",
+              type: "number",
+            },
             { label: "CPU", id: "CPU" },
             { label: "RAM", id: "RAM" },
             { label: "Storage", id: "Storage" },
@@ -89,7 +146,15 @@ export default function AddForm() {
             { label: "Camera Resolution", id: "CameraResolution" },
             { label: "Battery Life", id: "BatteryLife" },
             { label: "Print Speed", id: "PrintSpeed" },
-            { label: "WiFi", id: "WiFi" },
+            {
+              label: "WiFi",
+              id: "WiFi",
+              type: "select",
+              options: [
+                { id: "yes", label: "Yes" },
+                { id: "no", label: "No" },
+              ],
+            },
             { label: "Copying", id: "Copying" },
             { label: "Scanning", id: "Scanning" },
             { label: "Paper Handling", id: "PaperHandling" },
@@ -98,7 +163,15 @@ export default function AddForm() {
             { label: "Network Protocol", id: "NetworkProtocol" },
             { label: "Interface", id: "Interface" },
             { label: "Network Compatibility", id: "NetworkCompatibility" },
-            { label: "SIM Card Slot", id: "SIMCardSlot" },
+            {
+              label: "SIM Card Slot",
+              id: "SIMCardSlot",
+              type: "select",
+              options: [
+                { id: "yes", label: "Yes" },
+                { id: "no", label: "No" },
+              ],
+            },
             { label: "Wireless Connectivity", id: "WirelessConnectivity" },
             {
               label: "Max Devices Connected",
@@ -133,7 +206,7 @@ export default function AddForm() {
                       {options &&
                         options.map((option: any) => (
                           <SelectItem key={option.id} value={option.id}>
-                            {option.name}
+                            {option.label}
                           </SelectItem>
                         ))}
                     </SelectGroup>

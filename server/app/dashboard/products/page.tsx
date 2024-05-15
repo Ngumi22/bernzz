@@ -66,7 +66,7 @@ const ProductDashboard = () => {
     try {
       const response = await deleteProduct(productId);
 
-      handleGetAllProducts(response);
+      handleGetAllProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
 
