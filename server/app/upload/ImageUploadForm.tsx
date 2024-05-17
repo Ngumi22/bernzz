@@ -1,44 +1,43 @@
 "use client";
 
-// Client side code (ImageUploadForm.tsx)
+import { useState } from "react";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { saveImagesToDb } from "@/app/api/addImages";
-import { useForm } from "react-hook-form";
+export default function UploadForm() {
+  const [files, setFiles] = useState<FileList | null>(null);
 
-interface ImageUploadFormProps {
-  onUpload: () => void;
-}
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!files) return;
 
-const ImageUploadForm: React.FC<ImageUploadFormProps> = ({ onUpload }) => {
-  const { register, handleSubmit } = useForm();
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Handle image selection
-  };
-
-  const handleImageSubmit = async (formData: any, res: any) => {
     try {
-      const result = await saveImagesToDb(formData, res);
-      setSuccess("Images uploaded successfully");
-      setError("");
-      onUpload();
-    } catch (error) {
-      setError("Error uploading images: " + error);
-      setSuccess("");
+      const data = new FormData();
+      Array.from(files).forEach((file) => data.append("files", file));
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
+      if (!res.ok) throw new Error(await res.text());
+    } catch (e: any) {
+      console.error(e);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(handleImageSubmit)}>
-      <input type="file" multiple onChange={handleImageChange} />
-      <button type="submit">Upload Images</button>
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
+    <form onSubmit={onSubmit}>
+      <input
+        type="file"
+        name="files"
+        multiple
+        onChange={(e) => setFiles(e.target.files)}
+      />
+      <input
+        type="file"
+        name="files"
+        multiple
+        onChange={(e) => setFiles(e.target.files)}
+      />
+      <button type="submit">Upload</button>
     </form>
   );
-};
-
-export default ImageUploadForm;
+}
