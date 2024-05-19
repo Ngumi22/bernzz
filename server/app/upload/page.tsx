@@ -6,9 +6,14 @@ import { fetchImagesFromDb } from "@/app/api/addImages";
 
 interface ImageData {
   id: string;
-  title: string;
-  image_data: string; // This will now be a base64 string
-  // Add other fields if necessary
+  main_image: string;
+  thumbnail1: string;
+  thumbnail2: string;
+  thumbnail3: string;
+  thumbnail4: string;
+  thumbnail5: string;
+  productName: string;
+  productDescription: string;
 }
 
 export default function Page() {
@@ -22,6 +27,7 @@ export default function Page() {
   const fetchImages = async () => {
     try {
       const imageDataArray = await fetchImagesFromDb();
+      console.log(imageDataArray);
       setImages(imageDataArray);
     } catch (error) {
       console.error("Error fetching images:", error);
@@ -37,14 +43,46 @@ export default function Page() {
       {loading ? (
         <p>Loading images...</p>
       ) : images.length > 0 ? (
-        <div className="grid grid-cols-4 grid-flow-row">
+        <div className="flex">
           {images.map((image, index) => (
-            <img
-              key={index}
-              src={`data:image/jpeg;base64,${image.image_data}`}
-              alt={image.title || `Image ${index}`}
-              style={{ marginRight: "10px", marginBottom: "10px" }}
-            />
+            <div key={index} className="flex">
+              <img
+                src={`data:image/jpeg;base64,${image.main_image}`}
+                alt={`Main Image ${index}`}
+                style={{ marginRight: "10px", marginBottom: "10px" }}
+              />
+              <div>Main Image</div>
+              <div className="flex">
+                <img
+                  src={`data:image/jpeg;base64,${image.thumbnail1}`}
+                  alt={`Thumbnail 1 ${index}`}
+                  style={{ marginRight: "10px", marginBottom: "10px" }}
+                />
+                <img
+                  src={`data:image/jpeg;base64,${image.thumbnail2}`}
+                  alt={`Thumbnail 2 ${index}`}
+                  style={{ marginRight: "10px", marginBottom: "10px" }}
+                />
+                <img
+                  src={`data:image/jpeg;base64,${image.thumbnail3}`}
+                  alt={`Thumbnail 3 ${index}`}
+                  style={{ marginRight: "10px", marginBottom: "10px" }}
+                />
+                <img
+                  src={`data:image/jpeg;base64,${image.thumbnail4}`}
+                  alt={`Thumbnail 4 ${index}`}
+                  style={{ marginRight: "10px", marginBottom: "10px" }}
+                />
+                <img
+                  src={`data:image/jpeg;base64,${image.thumbnail5}`}
+                  alt={`Thumbnail 5 ${index}`}
+                  style={{ marginRight: "10px", marginBottom: "10px" }}
+                />
+              </div>
+              <div>Thumbnails</div>
+              <div>Name: {image.productName}</div>
+              <div>Description: {image.productDescription}</div>
+            </div>
           ))}
         </div>
       ) : (

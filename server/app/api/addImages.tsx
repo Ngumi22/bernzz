@@ -1,7 +1,20 @@
 "use server";
+
 import mysql from "mysql2/promise";
 
-export async function fetchImagesFromDb() {
+interface ImageData {
+  id: string;
+  main_image: string;
+  thumbnail1: string;
+  thumbnail2: string;
+  thumbnail3: string;
+  thumbnail4: string;
+  thumbnail5: string;
+  productName: string;
+  productDescription: string;
+}
+
+export async function fetchImagesFromDb(): Promise<ImageData[]> {
   const connection = await mysql.createConnection({
     host: "127.0.0.1",
     database: "bernzz",
@@ -11,25 +24,30 @@ export async function fetchImagesFromDb() {
   });
 
   try {
-    const [rows]: any[] = await connection.execute("SELECT * FROM images");
+    const [rows]: any[] = await connection.execute(
+      `SELECT images.*, product.name AS productName, product.description AS productDescription
+       FROM images
+       JOIN product ON images.id = product.image_id`
+    );
 
     // Convert the image_data from binary to base64 string
-    const images = rows.map((row: any) => ({
-      ...row,
-      image_data: Buffer.from(row.image_data).toString("base64"),
+    const images: ImageData[] = rows.map((row: any) => ({
+      id: row.id,
+      main_image: Buffer.from(row.main_image).toString("base64"),
+      thumbnail1: Buffer.from(row.thumbnail1).toString("base64"),
+      thumbnail2: Buffer.from(row.thumbnail2).toString("base64"),
+      thumbnail3: Buffer.from(row.thumbnail3).toString("base64"),
+      thumbnail4: Buffer.from(row.thumbnail4).toString("base64"),
+      thumbnail5: Buffer.from(row.thumbnail5).toString("base64"),
+      productName: row.productName,
+      productDescription: row.productDescription,
     }));
 
-    await connection.end();
     return images;
   } catch (error) {
     console.error("Error fetching images:", error);
-    await connection.end();
     throw error;
+  } finally {
+    await connection.end();
   }
 }
-
-// INSERT INTO images (title,image_data) VALUES ('Laptop 2', LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/omen.png'));
-// INSERT INTO images (title,image_data) VALUES ('Laptop 3', LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/sam.png'));
-// INSERT INTO images (title,image_data) VALUES ('Laptop 4', LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/lap3.jpg'));
-// C:\Users\ADMIN\Desktop\b_photos/hp.jpg
-//INSERT INTO images (title,image_data) VALUES ('Laptop 2', LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/omen.png'));
