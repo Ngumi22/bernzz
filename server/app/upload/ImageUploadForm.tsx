@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function UploadForm() {
+  const { toast } = useToast();
+
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [thumbnails, setThumbnails] = useState<File[]>([]);
   const [productName, setProductName] = useState<string>("");
   const [productDescription, setProductDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,9 +22,13 @@ export default function UploadForm() {
       !productName ||
       !productDescription
     ) {
-      alert(
-        "Please upload one main image, exactly five thumbnails, and provide product name and description."
-      );
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description:
+          "Please upload one main image, five thumbnails, and fill all fields.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
       return;
     }
 
@@ -41,10 +51,16 @@ export default function UploadForm() {
         throw new Error(errorText);
       } else {
         const result = await res.json();
-        console.log(result.message);
+        toast({
+          title: "Form Upload",
+          description: "Successfully uploaded",
+        });
       }
     } catch (e: any) {
       console.error(e);
+      setError(
+        "An error occurred while uploading the form. Please try again later."
+      );
     }
   };
 
@@ -62,6 +78,7 @@ export default function UploadForm() {
 
   return (
     <form onSubmit={onSubmit}>
+      {error && <div>{error}</div>}
       <label>Main Image</label>
       <input
         type="file"
@@ -91,7 +108,7 @@ export default function UploadForm() {
         value={productDescription}
         onChange={(e) => setProductDescription(e.target.value)}
       />
-      <button type="submit">Upload</button>
+      <button type="submit">Submit</button>
     </form>
   );
 }
