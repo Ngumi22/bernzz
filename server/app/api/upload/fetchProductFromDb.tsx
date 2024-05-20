@@ -18,6 +18,7 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
       SELECT
         p.id AS product_id,
         p.name,
+        p.sku,
         p.description,
         i.main_image,
         i.thumbnail1,
@@ -42,6 +43,7 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
 
       return {
         id: row.product_id,
+        sku: row.sku,
         name: row.name,
         description: row.description,
         images: {

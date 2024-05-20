@@ -14,6 +14,7 @@ export default function UploadForm() {
   const [thumbnails, setThumbnails] = useState<File[]>([]);
   const [productName, setProductName] = useState<string>("");
   const [productDescription, setProductDescription] = useState<string>("");
+  const [productSKU, setProductSKU] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +23,8 @@ export default function UploadForm() {
       !mainImage ||
       thumbnails.length !== 5 ||
       !productName ||
-      !productDescription
+      !productDescription ||
+      !productSKU
     ) {
       toast({
         variant: "destructive",
@@ -41,6 +43,7 @@ export default function UploadForm() {
         data.append(`thumbnail${index + 1}`, thumbnail)
       );
       data.append("name", productName);
+      data.append("sku", productSKU);
       data.append("description", productDescription);
 
       const res = await fetch("/api/upload", {
@@ -101,7 +104,17 @@ export default function UploadForm() {
       ))}
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="picture">Product Name</Label>
+        <Label htmlFor="sku">SKU</Label>
+        <Input
+          className="w-60"
+          type="text"
+          value={productSKU}
+          onChange={(e) => setProductSKU(e.target.value)}
+        />
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="name">Product Name</Label>
         <Input
           className="w-60"
           type="text"

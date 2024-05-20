@@ -9,6 +9,7 @@ interface FileData {
   thumbnail4: File;
   thumbnail5: File;
   fields: {
+    sku: string;
     name: string;
     description: string;
   };
@@ -24,6 +25,9 @@ export async function POST(request: NextRequest) {
   });
 
   try {
+    // Start a transaction
+    await connection.beginTransaction();
+
     // Ensure the 'images' table exists with the new structure
     await connection.query(`
       CREATE TABLE IF NOT EXISTS images (
@@ -37,10 +41,11 @@ export async function POST(request: NextRequest) {
       )
     `);
 
-    // Ensure the 'product' table exists with the new structure
+    // Ensure the 'product' table exists with the new structure and unique constraint on sku
     await connection.query(`
       CREATE TABLE IF NOT EXISTS product (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        sku VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL,
         description TEXT,
         image_id INT,
@@ -67,10 +72,27 @@ export async function POST(request: NextRequest) {
       thumbnail4,
       thumbnail5,
       fields: {
+        sku: fields.sku as string,
         name: fields.name as string,
         description: fields.description as string,
       },
     };
+
+    const { sku, name, description } = fileData.fields;
+
+    // Check if a product with the same sku already exists
+    const [existingProducts]: [any[], any] = await connection.query(
+      "SELECT id FROM product WHERE sku = ? FOR UPDATE",
+      [sku]
+    );
+
+    if (existingProducts.length > 0) {
+      await connection.rollback();
+      return NextResponse.json({
+        success: false,
+        message: "Product with this SKU already exists",
+      });
+    }
 
     const mainImageBuffer = main_image
       ? Buffer.from(await main_image.arrayBuffer())
@@ -87,20 +109,25 @@ export async function POST(request: NextRequest) {
       VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    const [result] = await connection.query<any>(query, [
+    const [result]: [any, any] = await connection.query(query, [
       mainImageBuffer,
       ...thumbnailBuffers,
     ]);
 
-    const imageId = result.insertId;
+    if (!result.insertId) {
+      throw new Error("Failed to insert images");
+    }
 
-    const { name, description } = fileData.fields;
+    const imageId = result.insertId;
 
     // Insert product with associated image_id
     await connection.query(
-      "INSERT INTO product (name, description, image_id) VALUES (?, ?, ?)",
-      [name, description, imageId]
+      "INSERT INTO product (sku, name, description, image_id) VALUES (?, ?, ?, ?)",
+      [sku, name, description, imageId]
     );
+
+    // Commit the transaction
+    await connection.commit();
 
     return NextResponse.json({
       success: true,
@@ -108,6 +135,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Database error:", error);
+    await connection.rollback();
     return NextResponse.json({ success: false, message: "Database error" });
   } finally {
     await connection.end();
