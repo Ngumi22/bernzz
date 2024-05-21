@@ -1,24 +1,34 @@
 "use server";
 
+import { ImageData, CategoryData, ProductssData } from "@/lib/definitions";
 import mysql from "mysql2/promise";
 
-import { ImageData, CategoryData, ProductssData } from "@/lib/definitions";
+// Create a connection pool
+const pool = mysql.createPool({
+  host: "127.0.0.1",
+  database: "bernzz",
+  port: 3306,
+  password: "123456",
+  user: "root",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
+// Utility function to convert binary data to base64
+const convertToBase64 = (buffer: Buffer | null) =>
+  buffer ? buffer.toString("base64") : "";
 
 export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(`
       SELECT
         p.id AS product_id,
         p.name,
         p.sku,
+        c.name AS category,
+        p.status,
         p.description,
         i.main_image,
         i.thumbnail1,
@@ -28,6 +38,7 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
         i.thumbnail5
       FROM product p
       LEFT JOIN images i ON p.image_id = i.id
+      LEFT JOIN categories c ON p.category_id = c.id
     `);
 
     const products: ProductssData[] = rows.map((row: any) => {
@@ -39,17 +50,17 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
         row.thumbnail5,
       ]
         .filter(Boolean)
-        .map((thumbnail: Buffer) => Buffer.from(thumbnail).toString("base64"));
+        .map(convertToBase64);
 
       return {
         id: row.product_id,
         sku: row.sku,
+        status: row.status,
+        category: row.category,
         name: row.name,
         description: row.description,
         images: {
-          main: row.main_image
-            ? Buffer.from(row.main_image).toString("base64")
-            : "",
+          main: convertToBase64(row.main_image),
           thumbnails,
         },
       };
@@ -60,25 +71,20 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
     console.error("Error fetching products:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }
 
 export async function fetchCategoryFromDb(): Promise<CategoryData[]> {
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
-    const [rows]: any[] = await connection.execute(`SELECT * from Categories`);
+    const [rows]: any[] = await connection.execute(
+      `SELECT id, name FROM categories`
+    );
 
-    // Convert the category_data from binary to base64 string
     const categories: CategoryData[] = rows.map((row: any) => ({
       id: row.id,
+      name: row.name,
     }));
 
     return categories;
@@ -86,88 +92,71 @@ export async function fetchCategoryFromDb(): Promise<CategoryData[]> {
     console.error("Error fetching categories:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }
+
 export async function fetchProductByIdFromDb(
   productId: number
 ): Promise<ImageData | null> {
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT images.*, product.name AS productName, product.description AS productDescription
-       FROM images
-       JOIN product ON images.id = product.image_id
+      `SELECT product.*, images.*
+       FROM product
+       JOIN images ON product.image_id = images.id
        WHERE product.id = ?`,
       [productId]
     );
 
-    if (rows.length === 0) {
-      return null; // Product not found
-    }
+    if (rows.length === 0) return null; // Product not found
 
     const row = rows[0];
 
-    // Convert the image_data from binary to base64 string
-    const image: ImageData = {
+    const product: ImageData = {
       id: row.id,
-      main_image: Buffer.from(row.main_image).toString("base64"),
-      thumbnail1: Buffer.from(row.thumbnail1).toString("base64"),
-      thumbnail2: Buffer.from(row.thumbnail2).toString("base64"),
-      thumbnail3: Buffer.from(row.thumbnail3).toString("base64"),
-      thumbnail4: Buffer.from(row.thumbnail4).toString("base64"),
-      thumbnail5: Buffer.from(row.thumbnail5).toString("base64"),
-      productName: row.productName,
-      productDescription: row.productDescription,
+      main_image: convertToBase64(row.main_image),
+      thumbnail1: convertToBase64(row.thumbnail1),
+      thumbnail2: convertToBase64(row.thumbnail2),
+      thumbnail3: convertToBase64(row.thumbnail3),
+      thumbnail4: convertToBase64(row.thumbnail4),
+      thumbnail5: convertToBase64(row.thumbnail5),
+      productName: row.name,
+      productDescription: row.description,
     };
 
-    return image;
+    return product;
   } catch (error) {
     console.error("Error fetching product:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }
+
 export async function fetchProductsByCategoryFromDb(
   categoryId: number
 ): Promise<ImageData[]> {
-  // Connect to the database
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT images.*, product.name AS productName, product.description AS productDescription
-       FROM images
-       JOIN product ON images.id = product.image_id
+      `SELECT product.*, images.*
+       FROM product
+       JOIN images ON product.image_id = images.id
        WHERE product.category_id = ?`,
       [categoryId]
     );
 
-    // Convert the image_data from binary to base64 string
     const products: ImageData[] = rows.map((row: any) => ({
       id: row.id,
-      main_image: Buffer.from(row.main_image).toString("base64"),
-      thumbnail1: Buffer.from(row.thumbnail1).toString("base64"),
-      thumbnail2: Buffer.from(row.thumbnail2).toString("base64"),
-      thumbnail3: Buffer.from(row.thumbnail3).toString("base64"),
-      thumbnail4: Buffer.from(row.thumbnail4).toString("base64"),
-      thumbnail5: Buffer.from(row.thumbnail5).toString("base64"),
-      productName: row.productName,
-      productDescription: row.productDescription,
+      main_image: convertToBase64(row.main_image),
+      thumbnail1: convertToBase64(row.thumbnail1),
+      thumbnail2: convertToBase64(row.thumbnail2),
+      thumbnail3: convertToBase64(row.thumbnail3),
+      thumbnail4: convertToBase64(row.thumbnail4),
+      thumbnail5: convertToBase64(row.thumbnail5),
+      productName: row.name,
+      productDescription: row.description,
     }));
 
     return products;
@@ -175,42 +164,33 @@ export async function fetchProductsByCategoryFromDb(
     console.error("Error fetching products by category:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }
 
 export async function fetchProductsBySearchFromDb(
   searchQuery: string
 ): Promise<ImageData[]> {
-  // Connect to the database
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT images.*, product.name AS productName, product.description AS productDescription
-       FROM images
-       JOIN product ON images.id = product.image_id
+      `SELECT product.*, images.*
+       FROM product
+       JOIN images ON product.image_id = images.id
        WHERE product.name LIKE ?`,
       [`%${searchQuery}%`]
     );
 
-    // Convert the image_data from binary to base64 string
     const products: ImageData[] = rows.map((row: any) => ({
       id: row.id,
-      main_image: Buffer.from(row.main_image).toString("base64"),
-      thumbnail1: Buffer.from(row.thumbnail1).toString("base64"),
-      thumbnail2: Buffer.from(row.thumbnail2).toString("base64"),
-      thumbnail3: Buffer.from(row.thumbnail3).toString("base64"),
-      thumbnail4: Buffer.from(row.thumbnail4).toString("base64"),
-      thumbnail5: Buffer.from(row.thumbnail5).toString("base64"),
-      productName: row.productName,
-      productDescription: row.productDescription,
+      main_image: convertToBase64(row.main_image),
+      thumbnail1: convertToBase64(row.thumbnail1),
+      thumbnail2: convertToBase64(row.thumbnail2),
+      thumbnail3: convertToBase64(row.thumbnail3),
+      thumbnail4: convertToBase64(row.thumbnail4),
+      thumbnail5: convertToBase64(row.thumbnail5),
+      productName: row.name,
+      productDescription: row.description,
     }));
 
     return products;
@@ -218,48 +198,37 @@ export async function fetchProductsBySearchFromDb(
     console.error("Error fetching products by search:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }
 
 export async function fetchProductBySlugFromDb(
   slug: string
 ): Promise<ImageData | null> {
-  // Connect to the database
-  const connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    database: "bernzz",
-    port: 3306,
-    password: "123456",
-    user: "root",
-  });
-
+  const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT images.*, product.name AS productName, product.description AS productDescription
-       FROM images
-       JOIN product ON images.id = product.image_id
+      `SELECT product.*, images.*
+       FROM product
+       JOIN images ON product.image_id = images.id
        WHERE product.slug = ?`,
       [slug]
     );
 
-    if (rows.length === 0) {
-      return null; // Product not found
-    }
+    if (rows.length === 0) return null; // Product not found
 
     const row = rows[0];
 
-    // Convert the image_data from binary to base64 string
     const product: ImageData = {
       id: row.id,
-      main_image: Buffer.from(row.main_image).toString("base64"),
-      thumbnail1: Buffer.from(row.thumbnail1).toString("base64"),
-      thumbnail2: Buffer.from(row.thumbnail2).toString("base64"),
-      thumbnail3: Buffer.from(row.thumbnail3).toString("base64"),
-      thumbnail4: Buffer.from(row.thumbnail4).toString("base64"),
-      thumbnail5: Buffer.from(row.thumbnail5).toString("base64"),
-      productName: row.productName,
-      productDescription: row.productDescription,
+      main_image: convertToBase64(row.main_image),
+      thumbnail1: convertToBase64(row.thumbnail1),
+      thumbnail2: convertToBase64(row.thumbnail2),
+      thumbnail3: convertToBase64(row.thumbnail3),
+      thumbnail4: convertToBase64(row.thumbnail4),
+      thumbnail5: convertToBase64(row.thumbnail5),
+      productName: row.name,
+      productDescription: row.description,
     };
 
     return product;
@@ -267,6 +236,6 @@ export async function fetchProductBySlugFromDb(
     console.error("Error fetching product by slug:", error);
     throw error;
   } finally {
-    await connection.end();
+    connection.release();
   }
 }

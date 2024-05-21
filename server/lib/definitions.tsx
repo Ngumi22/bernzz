@@ -91,6 +91,8 @@ export interface CategoryData {
 export interface ProductssData {
   id: number;
   sku: string;
+  status: string;
+  category: string;
   name: string;
   description: string;
   images: {

@@ -79,6 +79,19 @@ export default function UploadForm() {
   return (
     <form onSubmit={onSubmit}>
       {error && <div>{error}</div>}
+
+      <label>Product Name</label>
+      <input
+        type="text"
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
+      />
+      <label>Product Description</label>
+      <textarea
+        value={productDescription}
+        onChange={(e) => setProductDescription(e.target.value)}
+      />
+
       <label>Main Image</label>
       <input
         type="file"
@@ -97,17 +110,6 @@ export default function UploadForm() {
           />
         </div>
       ))}
-      <label>Product Name</label>
-      <input
-        type="text"
-        value={productName}
-        onChange={(e) => setProductName(e.target.value)}
-      />
-      <label>Product Description</label>
-      <textarea
-        value={productDescription}
-        onChange={(e) => setProductDescription(e.target.value)}
-      />
       <button type="submit">Submit</button>
     </form>
   );

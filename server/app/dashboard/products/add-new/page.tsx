@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
@@ -15,7 +15,26 @@ export default function UploadForm() {
   const [productName, setProductName] = useState<string>("");
   const [productDescription, setProductDescription] = useState<string>("");
   const [productSKU, setProductSKU] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [productCategory, setProductCategory] = useState<string>("");
+  const [productStatus, setProductStatus] = useState<
+    "Archived" | "Active" | "Draft"
+  >("Draft");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Fetch categories from the server
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+        setCategories(data.categories);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +43,9 @@ export default function UploadForm() {
       thumbnails.length !== 5 ||
       !productName ||
       !productDescription ||
-      !productSKU
+      !productSKU ||
+      !productCategory ||
+      !productStatus
     ) {
       toast({
         variant: "destructive",
@@ -45,6 +66,8 @@ export default function UploadForm() {
       data.append("name", productName);
       data.append("sku", productSKU);
       data.append("description", productDescription);
+      data.append("category", productCategory);
+      data.append("status", productStatus);
 
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -63,9 +86,12 @@ export default function UploadForm() {
       }
     } catch (e: any) {
       console.error(e);
-      setError(
-        "An error occurred while uploading the form. Please try again later."
-      );
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: e.message,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     }
   };
 
@@ -83,7 +109,6 @@ export default function UploadForm() {
 
   return (
     <form onSubmit={onSubmit}>
-      {error && <div>{error}</div>}
       <label>Main Image</label>
       <input
         type="file"
@@ -131,6 +156,40 @@ export default function UploadForm() {
           onChange={(e) => setProductDescription(e.target.value)}
         />
       </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="category">Category</Label>
+        <Textarea
+          className="w-60"
+          value={productCategory}
+          onChange={(e) => setProductCategory(e.target.value)}
+        />
+        <select
+          className="w-60"
+          value={productCategory}
+          onChange={(e) => setProductCategory(e.target.value)}>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="status">Status</Label>
+        <select
+          className="w-60"
+          value={productStatus}
+          onChange={(e) =>
+            setProductStatus(e.target.value as "Archived" | "Active" | "Draft")
+          }>
+          <option value="Draft">Draft</option>
+          <option value="Active">Active</option>
+          <option value="Archived">Archived</option>
+        </select>
+      </div>
+
       <button type="submit">Submit</button>
     </form>
   );

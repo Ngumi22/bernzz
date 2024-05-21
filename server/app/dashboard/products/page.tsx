@@ -35,6 +35,8 @@ export default function Products() {
               <p>{product.name}</p>
               <p>{product.description}</p>
               <p>{product.sku}</p>
+              <p>{product.category}</p>
+              <p>{product.status}</p>
               <Image
                 src={`data:image/jpeg;base64,${product.images.main}`}
                 alt={product.name}
