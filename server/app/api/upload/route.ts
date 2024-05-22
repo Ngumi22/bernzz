@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
+import { NextApiRequest, NextApiResponse } from "next/types";
 interface FileData {
   main_image: File;
   thumbnail1: File;
@@ -14,6 +15,9 @@ interface FileData {
     description: string;
     category: string;
     status: "Archived" | "Active" | "Draft";
+    price: number;
+    discount: number;
+    quantity: number;
   };
 }
 
@@ -36,14 +40,6 @@ function validateFiles(files: File[]): { valid: boolean; message?: string } {
 }
 
 export async function POST(request: NextRequest) {
-  // const connection = await mysql.createConnection({
-  //   host: process.env.DB_HOST,
-  //   database: process.env.DB_NAME,
-  //   port: Number(process.env.DB_PORT),
-  //   password: process.env.DB_PASSWORD,
-  //   user: process.env.DB_USER,
-  // });
-
   const connection = await mysql.createConnection({
     host: "127.0.0.1",
     database: "bernzz",
@@ -84,6 +80,9 @@ export async function POST(request: NextRequest) {
         category_id INT,
         status ENUM('Archived', 'Active', 'Draft') DEFAULT 'Draft',
         image_id INT,
+        price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+        discount DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+        quantity INT NOT NULL DEFAULT 0,
         FOREIGN KEY (image_id) REFERENCES images(id),
         FOREIGN KEY (category_id) REFERENCES categories(id)
       )
@@ -128,10 +127,22 @@ export async function POST(request: NextRequest) {
         description: fields.description as string,
         category: fields.category as string,
         status: fields.status as "Archived" | "Active" | "Draft",
+        price: parseFloat(fields.price as string),
+        discount: parseFloat(fields.discount as string),
+        quantity: parseInt(fields.quantity as string, 10),
       },
     };
 
-    const { sku, name, description, category, status } = fileData.fields;
+    const {
+      sku,
+      name,
+      description,
+      category,
+      status,
+      price,
+      discount,
+      quantity,
+    } = fileData.fields;
 
     // Check if a product with the same sku already exists
     const [existingProducts]: [any[], any] = await connection.query(
@@ -195,8 +206,18 @@ export async function POST(request: NextRequest) {
 
     // Insert product with associated image_id and category_id
     await connection.query(
-      "INSERT INTO product (sku, name, description, category_id, status, image_id) VALUES (?, ?, ?, ?, ?, ?)",
-      [sku, name, description, categoryId, status, imageId]
+      "INSERT INTO product (sku, name, description, category_id, status, image_id, price, discount, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        sku,
+        name,
+        description,
+        categoryId,
+        status,
+        imageId,
+        price,
+        discount,
+        quantity,
+      ]
     );
 
     await connection.commit();
@@ -209,6 +230,48 @@ export async function POST(request: NextRequest) {
     console.error("Database error:", error);
     await connection.rollback();
     return NextResponse.json({ success: false, message: "Database error" });
+  } finally {
+    await connection.end();
+  }
+}
+
+export default async function DELETE(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "DELETE") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  const productId = parseInt(req.query.id as string);
+
+  if (isNaN(productId)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  const connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    database: "bernzz",
+    port: 3306,
+    password: "123456",
+    user: "root",
+  });
+
+  try {
+    await connection.beginTransaction();
+
+    // Delete the product
+    await connection.query("DELETE FROM product WHERE id = ?", [productId]);
+
+    // Delete the associated images (optional, depending on your data model)
+    // await connection.query("DELETE FROM images WHERE id = (SELECT image_id FROM product WHERE id = ?)", [productId]);
+
+    await connection.commit();
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    await connection.rollback();
+    res.status(500).json({ message: "Internal Server Error" });
   } finally {
     await connection.end();
   }

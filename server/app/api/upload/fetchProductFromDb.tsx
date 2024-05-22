@@ -27,6 +27,9 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
         p.id AS product_id,
         p.name,
         p.sku,
+        p.price,
+        p.discount,
+        p.quantity,
         c.name AS category,
         p.status,
         p.description,
@@ -59,6 +62,9 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
         category: row.category,
         name: row.name,
         description: row.description,
+        price: row.price,
+        discount: row.discount,
+        quantity: row.quantity,
         images: {
           main: convertToBase64(row.main_image),
           thumbnails,
@@ -97,40 +103,65 @@ export async function fetchCategoryFromDb(): Promise<CategoryData[]> {
 }
 
 export async function fetchProductByIdFromDb(
-  productId: number
-): Promise<ImageData | null> {
-  const connection = await pool.getConnection();
+  id: number
+): Promise<ProductssData | null> {
+  const connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    database: "bernzz",
+    port: 3306,
+    password: "123456",
+    user: "root",
+  });
+
   try {
-    const [rows]: any[] = await connection.execute(
-      `SELECT product.*, images.*
-       FROM product
-       JOIN images ON product.image_id = images.id
-       WHERE product.id = ?`,
-      [productId]
+    const [rows]: [any[], any] = await connection.query(
+      `
+      SELECT
+        p.id, p.sku, p.price, p.discount, p.quantity, p.status, p.name, p.description,
+        c.name AS category,
+        i.main_image, i.thumbnail1, i.thumbnail2, i.thumbnail3, i.thumbnail4, i.thumbnail5
+      FROM product p
+      LEFT JOIN categories c ON p.category_id = c.id
+      LEFT JOIN images i ON p.image_id = i.id
+      WHERE p.id = ?
+      `,
+      [id]
     );
 
-    if (rows.length === 0) return null; // Product not found
+    if (rows.length === 0) {
+      return null;
+    }
 
     const row = rows[0];
 
-    const product: ImageData = {
+    const product: ProductssData = {
       id: row.id,
-      main_image: convertToBase64(row.main_image),
-      thumbnail1: convertToBase64(row.thumbnail1),
-      thumbnail2: convertToBase64(row.thumbnail2),
-      thumbnail3: convertToBase64(row.thumbnail3),
-      thumbnail4: convertToBase64(row.thumbnail4),
-      thumbnail5: convertToBase64(row.thumbnail5),
-      productName: row.name,
-      productDescription: row.description,
+      sku: row.sku,
+      price: row.price,
+      discount: row.discount,
+      quantity: row.quantity,
+      status: row.status,
+      category: row.category,
+      name: row.name,
+      description: row.description,
+      images: {
+        main: row.main_image ? row.main_image.toString("base64") : "",
+        thumbnails: [
+          row.thumbnail1 ? row.thumbnail1.toString("base64") : "",
+          row.thumbnail2 ? row.thumbnail2.toString("base64") : "",
+          row.thumbnail3 ? row.thumbnail3.toString("base64") : "",
+          row.thumbnail4 ? row.thumbnail4.toString("base64") : "",
+          row.thumbnail5 ? row.thumbnail5.toString("base64") : "",
+        ].filter(Boolean),
+      },
     };
 
     return product;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error fetching product by ID:", error);
     throw error;
   } finally {
-    connection.release();
+    await connection.end();
   }
 }
 
@@ -140,10 +171,10 @@ export async function fetchProductsByCategoryFromDb(
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT product.*, images.*
-       FROM product
-       JOIN images ON product.image_id = images.id
-       WHERE product.category_id = ?`,
+      `SELECT p.*, i.main_image, i.thumbnail1, i.thumbnail2, i.thumbnail3, i.thumbnail4, i.thumbnail5
+       FROM product p
+       LEFT JOIN images i ON p.image_id = i.id
+       WHERE p.category_id = ?`,
       [categoryId]
     );
 
@@ -157,6 +188,9 @@ export async function fetchProductsByCategoryFromDb(
       thumbnail5: convertToBase64(row.thumbnail5),
       productName: row.name,
       productDescription: row.description,
+      price: row.price,
+      discount: row.discount,
+      quantity: row.quantity,
     }));
 
     return products;
@@ -208,10 +242,10 @@ export async function fetchProductBySlugFromDb(
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
-      `SELECT product.*, images.*
-       FROM product
-       JOIN images ON product.image_id = images.id
-       WHERE product.slug = ?`,
+      `SELECT p.*, i.main_image, i.thumbnail1, i.thumbnail2, i.thumbnail3, i.thumbnail4, i.thumbnail5
+       FROM product p
+       LEFT JOIN images i ON p.image_id = i.id
+       WHERE p.slug = ?`,
       [slug]
     );
 
@@ -229,6 +263,9 @@ export async function fetchProductBySlugFromDb(
       thumbnail5: convertToBase64(row.thumbnail5),
       productName: row.name,
       productDescription: row.description,
+      price: row.price,
+      discount: row.discount,
+      quantity: row.quantity,
     };
 
     return product;

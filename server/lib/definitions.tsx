@@ -82,6 +82,9 @@ export interface ImageData {
   thumbnail5: string;
   productName: string;
   productDescription: string;
+  price: number;
+  discount: number;
+  quantity: number;
 }
 export interface CategoryData {
   id: string;
@@ -91,6 +94,9 @@ export interface CategoryData {
 export interface ProductssData {
   id: number;
   sku: string;
+  price: number;
+  discount: number;
+  quantity: number;
   status: string;
   category: string;
   name: string;

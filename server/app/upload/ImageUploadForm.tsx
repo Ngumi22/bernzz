@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 export default function UploadForm() {
   const { toast } = useToast();
@@ -92,14 +93,18 @@ export default function UploadForm() {
         onChange={(e) => setProductDescription(e.target.value)}
       />
 
-      <label>Main Image</label>
-      <input
-        type="file"
-        name="main_image"
-        onChange={(e) =>
-          setMainImage(e.target.files ? e.target.files[0] : null)
-        }
-      />
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="picture">Main Image</Label>
+        <Input
+          id="picture"
+          type="file"
+          name="main_image"
+          onChange={(e) =>
+            setMainImage(e.target.files ? e.target.files[0] : null)
+          }
+        />
+      </div>
+
       {[...Array(5)].map((_, index) => (
         <div key={index}>
           <label>Thumbnail {index + 1}</label>

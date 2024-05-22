@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { fetchAllProductFromDb } from "@/app/api/upload/fetchProductFromDb";
 import { ProductssData } from "@/lib/definitions";
 import Image from "next/image";
+import axios from "axios";
+import Link from "next/link";
 
 export default function Products() {
   const [products, setProducts] = useState<ProductssData[]>([]);
@@ -24,6 +26,22 @@ export default function Products() {
     }
   };
 
+  const handleEdit = (product: ProductssData) => {
+    // Handle edit logic here
+    console.log("Edit product:", product);
+    // Navigate to edit page or open a modal for editing
+  };
+
+  const handleDelete = async (productId: number) => {
+    try {
+      await axios.delete(`/dashboard/products/${productId}`);
+      // Refresh the product list after deletion
+      fetchProducts();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   return (
     <div>
       {loading ? (
@@ -33,6 +51,9 @@ export default function Products() {
           {products.map((product) => (
             <li key={product.id}>
               <p>{product.name}</p>
+              <p>{product.price}</p>
+              <p>{product.quantity}</p>
+              <p>{product.discount}</p>
               <p>{product.description}</p>
               <p>{product.sku}</p>
               <p>{product.category}</p>
@@ -42,8 +63,8 @@ export default function Products() {
                 alt={product.name}
                 height={40}
                 width={40}
+                className="w-20 h-20"
               />
-
               <div className="flex">
                 {product.images.thumbnails.map((thumbnail, index) => (
                   <img
@@ -59,6 +80,12 @@ export default function Products() {
                   />
                 ))}
               </div>
+              <button onClick={() => handleEdit(product)}>
+                <Link href={`/dashboard/products/edit-product/${product.id}`}>
+                  Edit
+                </Link>
+              </button>
+              <button onClick={() => handleDelete(product.id)}>Delete</button>
             </li>
           ))}
         </ul>
