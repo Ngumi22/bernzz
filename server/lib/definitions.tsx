@@ -61,16 +61,22 @@ export interface ProductData {
 }
 
 export interface FileData {
-  fields: {
-    name: string;
-    description: string;
-  };
   main_image: File;
   thumbnail1: File;
   thumbnail2: File;
   thumbnail3: File;
   thumbnail4: File;
   thumbnail5: File;
+  fields: {
+    sku: string;
+    name: string;
+    description: string;
+    category: string;
+    status: "Archived" | "Active" | "Draft";
+    price: number;
+    discount: number;
+    quantity: number;
+  };
 }
 export interface ImageData {
   id: string;
@@ -88,7 +94,7 @@ export interface ImageData {
 }
 export interface CategoryData {
   id: string;
-  category_name: string;
+  name: string;
 }
 
 export interface ProductssData {

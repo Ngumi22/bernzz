@@ -18,6 +18,7 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       const products = await fetchAllProductFromDb();
+
       setProducts(products);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -81,7 +82,7 @@ export default function Products() {
                 ))}
               </div>
               <button onClick={() => handleEdit(product)}>
-                <Link href={`/dashboard/products/edit-product/${product.id}`}>
+                <Link href={`/dashboard/products/${product.id}/edit`}>
                   Edit
                 </Link>
               </button>

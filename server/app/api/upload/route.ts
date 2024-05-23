@@ -1,29 +1,14 @@
+"use server";
+
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
 import { NextApiRequest, NextApiResponse } from "next/types";
-interface FileData {
-  main_image: File;
-  thumbnail1: File;
-  thumbnail2: File;
-  thumbnail3: File;
-  thumbnail4: File;
-  thumbnail5: File;
-  fields: {
-    sku: string;
-    name: string;
-    description: string;
-    category: string;
-    status: "Archived" | "Active" | "Draft";
-    price: number;
-    discount: number;
-    quantity: number;
-  };
-}
+import { FileData } from "@/lib/definitions";
 
 function validateFiles(files: File[]): { valid: boolean; message?: string } {
   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
-  const maxSize = 100 * 1024; // 100KB
+  const maxSize = 100 * 1024; // Images cannot be more 100KB in size
 
   for (const file of files) {
     if (!allowedTypes.includes(file.type)) {
@@ -90,6 +75,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const fields = Object.fromEntries(formData.entries());
+    // .fromEntries is used here because we are have many entries in the form
 
     // Extract files from formData
     const main_image = formData.get("main_image") as File;
@@ -235,10 +221,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export default async function DELETE(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "DELETE") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
@@ -272,6 +255,55 @@ export default async function DELETE(
     console.error("Error deleting product:", error);
     await connection.rollback();
     res.status(500).json({ message: "Internal Server Error" });
+  } finally {
+    await connection.end();
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  const {
+    name,
+    sku,
+    price,
+    quantity,
+    discount,
+    description,
+    category,
+    status,
+  } = await req.json();
+
+  const connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    database: "bernzz",
+    port: 3306,
+    password: "123456",
+    user: "root",
+  });
+
+  try {
+    const [result]: [mysql.ResultSetHeader, any] = await connection.query(
+      `
+      UPDATE product
+      SET name = ?, sku = ?, price = ?, quantity = ?, discount = ?, description = ?, status = ?, category_id = (
+        SELECT id FROM categories WHERE name = ? LIMIT 1
+      )
+      WHERE id = ?
+      `,
+      [name, sku, price, quantity, discount, description, status, category, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return new NextResponse("Product not found", { status: 404 });
+    }
+
+    return new NextResponse("Product updated successfully", { status: 200 });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return new NextResponse("Error updating product", { status: 500 });
   } finally {
     await connection.end();
   }

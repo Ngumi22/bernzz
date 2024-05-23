@@ -1,18 +1,27 @@
+"use server";
+
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
-interface FileData {
-  main_image: File;
-  thumbnail1: File;
-  thumbnail2: File;
-  thumbnail3: File;
-  thumbnail4: File;
-  thumbnail5: File;
-  fields: {
-    sku: string;
-    name: string;
-    description: string;
-  };
+import { NextApiRequest, NextApiResponse } from "next/types";
+import { FileData } from "@/lib/definitions";
+
+function validateFiles(files: File[]): { valid: boolean; message?: string } {
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+  const maxSize = 100 * 1024; // Images cannot be more 100KB in size
+
+  for (const file of files) {
+    if (!allowedTypes.includes(file.type)) {
+      return { valid: false, message: "Invalid file type" };
+    }
+    if (file.size > maxSize) {
+      return {
+        valid: false,
+        message: `File size exceeds 100KB limit: ${file.name}`,
+      };
+    }
+  }
+  return { valid: true };
 }
 
 export async function POST(request: NextRequest) {
@@ -25,10 +34,16 @@ export async function POST(request: NextRequest) {
   });
 
   try {
-    // Start a transaction
     await connection.beginTransaction();
 
-    // Ensure the 'images' table exists with the new structure
+    // Ensure tables exist
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS categories (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL UNIQUE
+      )
+    `);
+
     await connection.query(`
       CREATE TABLE IF NOT EXISTS images (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,20 +56,26 @@ export async function POST(request: NextRequest) {
       )
     `);
 
-    // Ensure the 'product' table exists with the new structure and unique constraint on sku
     await connection.query(`
       CREATE TABLE IF NOT EXISTS product (
         id INT AUTO_INCREMENT PRIMARY KEY,
         sku VARCHAR(255) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL,
         description TEXT,
+        category_id INT,
+        status ENUM('Archived', 'Active', 'Draft') DEFAULT 'Draft',
         image_id INT,
-        FOREIGN KEY (image_id) REFERENCES images(id)
+        price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+        discount DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+        quantity INT NOT NULL DEFAULT 0,
+        FOREIGN KEY (image_id) REFERENCES images(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id)
       )
     `);
 
     const formData = await request.formData();
     const fields = Object.fromEntries(formData.entries());
+    // .fromEntries is used here because we are have many entries in the form
 
     // Extract files from formData
     const main_image = formData.get("main_image") as File;
@@ -63,6 +84,21 @@ export async function POST(request: NextRequest) {
     const thumbnail3 = formData.get("thumbnail3") as File;
     const thumbnail4 = formData.get("thumbnail4") as File;
     const thumbnail5 = formData.get("thumbnail5") as File;
+
+    // Validate files
+    const filesToValidate = [
+      main_image,
+      thumbnail1,
+      thumbnail2,
+      thumbnail3,
+      thumbnail4,
+      thumbnail5,
+    ].filter(Boolean);
+    const { valid, message } = validateFiles(filesToValidate);
+    if (!valid) {
+      await connection.rollback();
+      return NextResponse.json({ success: false, message }, { status: 400 });
+    }
 
     const fileData: FileData = {
       main_image,
@@ -75,10 +111,24 @@ export async function POST(request: NextRequest) {
         sku: fields.sku as string,
         name: fields.name as string,
         description: fields.description as string,
+        category: fields.category as string,
+        status: fields.status as "Archived" | "Active" | "Draft",
+        price: parseFloat(fields.price as string),
+        discount: parseFloat(fields.discount as string),
+        quantity: parseInt(fields.quantity as string, 10),
       },
     };
 
-    const { sku, name, description } = fileData.fields;
+    const {
+      sku,
+      name,
+      description,
+      category,
+      status,
+      price,
+      discount,
+      quantity,
+    } = fileData.fields;
 
     // Check if a product with the same sku already exists
     const [existingProducts]: [any[], any] = await connection.query(
@@ -88,10 +138,30 @@ export async function POST(request: NextRequest) {
 
     if (existingProducts.length > 0) {
       await connection.rollback();
-      return NextResponse.json({
-        success: false,
-        message: "Product with this SKU already exists",
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Product with this SKU already exists",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check if the category exists, if not, insert it
+    let [categoryRows]: [any[], any] = await connection.query(
+      "SELECT id FROM categories WHERE name = ? FOR UPDATE",
+      [category]
+    );
+
+    let categoryId: number;
+    if (categoryRows.length === 0) {
+      const [categoryResult]: [any, any] = await connection.query(
+        "INSERT INTO categories (name) VALUES (?)",
+        [category]
+      );
+      categoryId = categoryResult.insertId;
+    } else {
+      categoryId = categoryRows[0].id;
     }
 
     const mainImageBuffer = main_image
@@ -120,13 +190,22 @@ export async function POST(request: NextRequest) {
 
     const imageId = result.insertId;
 
-    // Insert product with associated image_id
+    // Insert product with associated image_id and category_id
     await connection.query(
-      "INSERT INTO product (sku, name, description, image_id) VALUES (?, ?, ?, ?)",
-      [sku, name, description, imageId]
+      "INSERT INTO product (sku, name, description, category_id, status, image_id, price, discount, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        sku,
+        name,
+        description,
+        categoryId,
+        status,
+        imageId,
+        price,
+        discount,
+        quantity,
+      ]
     );
 
-    // Commit the transaction
     await connection.commit();
 
     return NextResponse.json({
@@ -137,6 +216,48 @@ export async function POST(request: NextRequest) {
     console.error("Database error:", error);
     await connection.rollback();
     return NextResponse.json({ success: false, message: "Database error" });
+  } finally {
+    await connection.end();
+  }
+}
+
+export default async function DELETE(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "DELETE") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  const productId = parseInt(req.query.id as string);
+
+  if (isNaN(productId)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  const connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    database: "bernzz",
+    port: 3306,
+    password: "123456",
+    user: "root",
+  });
+
+  try {
+    await connection.beginTransaction();
+
+    // Delete the product
+    await connection.query("DELETE FROM product WHERE id = ?", [productId]);
+
+    // Delete the associated images (optional, depending on your data model)
+    // await connection.query("DELETE FROM images WHERE id = (SELECT image_id FROM product WHERE id = ?)", [productId]);
+
+    await connection.commit();
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    await connection.rollback();
+    res.status(500).json({ message: "Internal Server Error" });
   } finally {
     await connection.end();
   }

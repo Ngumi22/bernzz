@@ -19,7 +19,7 @@ const pool = mysql.createPool({
 const convertToBase64 = (buffer: Buffer | null) =>
   buffer ? buffer.toString("base64") : "";
 
-export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
+export async function fetchAllProductFromDb(): Promise<any[]> {
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(`
@@ -44,7 +44,7 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
       LEFT JOIN categories c ON p.category_id = c.id
     `);
 
-    const products: ProductssData[] = rows.map((row: any) => {
+    const products = rows.map((row: any) => {
       const thumbnails = [
         row.thumbnail1,
         row.thumbnail2,
@@ -81,7 +81,7 @@ export async function fetchAllProductFromDb(): Promise<ProductssData[]> {
   }
 }
 
-export async function fetchCategoryFromDb(): Promise<CategoryData[]> {
+export async function fetchCategoryFromDb(): Promise<any[]> {
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
@@ -102,9 +102,7 @@ export async function fetchCategoryFromDb(): Promise<CategoryData[]> {
   }
 }
 
-export async function fetchProductByIdFromDb(
-  id: number
-): Promise<ProductssData | null> {
+export async function fetchProductByIdFromDb(id: number): Promise<any | null> {
   const connection = await mysql.createConnection({
     host: "127.0.0.1",
     database: "bernzz",
@@ -155,7 +153,6 @@ export async function fetchProductByIdFromDb(
         ].filter(Boolean),
       },
     };
-
     return product;
   } catch (error) {
     console.error("Error fetching product by ID:", error);
@@ -167,7 +164,7 @@ export async function fetchProductByIdFromDb(
 
 export async function fetchProductsByCategoryFromDb(
   categoryId: number
-): Promise<ImageData[]> {
+): Promise<any[]> {
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
@@ -204,7 +201,7 @@ export async function fetchProductsByCategoryFromDb(
 
 export async function fetchProductsBySearchFromDb(
   searchQuery: string
-): Promise<ImageData[]> {
+): Promise<any[]> {
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(
@@ -238,7 +235,7 @@ export async function fetchProductsBySearchFromDb(
 
 export async function fetchProductBySlugFromDb(
   slug: string
-): Promise<ImageData | null> {
+): Promise<any | null> {
   const connection = await pool.getConnection();
   try {
     const [rows]: any[] = await connection.execute(

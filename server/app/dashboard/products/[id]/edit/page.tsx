@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { ProductssData, CategoryData } from "@/lib/definitions";
+import {
+  fetchProductByIdFromDb,
+  fetchCategoryFromDb,
+} from "@/app/api/upload/fetchProductFromDb";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { fetchCategoryFromDb } from "@/app/api/upload/fetchProductFromDb";
 
 import {
   Select,
@@ -17,18 +22,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { CategoryData } from "@/lib/definitions";
-
-export default function UploadForm() {
+const EditProductPage = () => {
+  const { id } = useParams(); // Retrieve the product ID from the URL
   const { toast } = useToast();
 
-  const [mainImage, setMainImage] = useState<File | null>(null);
-  const [thumbnails, setThumbnails] = useState<File[]>([]);
+  const [product, setProduct] = useState<ProductssData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [productName, setProductName] = useState<string>("");
   const [productSKU, setProductSKU] = useState<string>("");
-  const [productPrice, setProductPrice] = useState<string>("");
-  const [productQuantity, setProductQuantity] = useState<string>("");
-  const [productDiscount, setProductDiscount] = useState<string>("");
+  const [productPrice, setProductPrice] = useState<number>();
+  const [productQuantity, setProductQuantity] = useState<number>();
+  const [productDiscount, setProductDiscount] = useState<number>();
   const [productDescription, setProductDescription] = useState<string>("");
   const [productCategory, setProductCategory] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -36,6 +41,37 @@ export default function UploadForm() {
     "Archived" | "Active" | "Draft"
   >("Draft");
   const [categories, setCategories] = useState<CategoryData[]>([]);
+
+  useEffect(() => {
+    if (!id) {
+      console.error("Product ID is missing from URL");
+      setLoading(false);
+      return;
+    }
+
+    const fetchProductById = async (productId: number) => {
+      try {
+        const response = await fetchProductByIdFromDb(productId);
+        if (response) {
+          setProduct(response);
+          setProductName(response.name);
+          setProductSKU(response.sku);
+          setProductPrice(response.price);
+          setProductQuantity(response.quantity);
+          setProductDiscount(response.discount);
+          setProductDescription(response.description);
+          setProductCategory(response.category);
+          setProductStatus(response.status as "Archived" | "Active" | "Draft"); // Update the type of setProductStatus
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductById(Number(id));
+  }, [id]);
 
   useEffect(() => {
     // Fetch categories from the server
@@ -58,8 +94,6 @@ export default function UploadForm() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
-      !mainImage ||
-      thumbnails.length !== 5 ||
       !productName ||
       !productSKU ||
       !productPrice ||
@@ -72,31 +106,30 @@ export default function UploadForm() {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description:
-          "Please upload one main image, five thumbnails, and fill all fields.",
+        description: "Please fill all fields.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
       return;
     }
 
     try {
-      const data = new FormData();
-      data.append("main_image", mainImage);
-      thumbnails.forEach((thumbnail, index) =>
-        data.append(`thumbnail${index + 1}`, thumbnail)
-      );
-      data.append("name", productName);
-      data.append("sku", productSKU);
-      data.append("price", productPrice);
-      data.append("quantity", productQuantity);
-      data.append("discount", productDiscount);
-      data.append("description", productDescription);
-      data.append("category", productCategory || selectedCategory); // Use either the new or existing category
-      data.append("status", productStatus);
+      const data = {
+        name: productName,
+        sku: productSKU,
+        price: productPrice,
+        quantity: productQuantity,
+        discount: productDiscount,
+        description: productDescription,
+        category: productCategory || selectedCategory, // Use either the new or existing category
+        status: productStatus,
+      };
 
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const res = await fetch(`/dashboard/products/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
@@ -105,8 +138,8 @@ export default function UploadForm() {
       } else {
         const result = await res.json();
         toast({
-          title: "Form Upload",
-          description: "Successfully uploaded",
+          title: "Product Update",
+          description: "Successfully updated",
         });
       }
     } catch (e: any) {
@@ -119,21 +152,17 @@ export default function UploadForm() {
       });
     }
   };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  const handleThumbnailChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const files = Array.from(e.target.files || []);
-    setThumbnails((prev) => {
-      const newThumbnails = [...prev];
-      newThumbnails[index] = files[0];
-      return newThumbnails;
-    });
-  };
+  if (!product) {
+    return <p>No product found</p>;
+  }
 
   return (
-    <section className="container my-8">
+    <div>
+      <h1>Edit Product</h1>
       <form onSubmit={onSubmit}>
         <div className="flex justify-between">
           <div>
@@ -163,7 +192,7 @@ export default function UploadForm() {
                 id="price-1"
                 type="number"
                 value={productPrice}
-                onChange={(e) => setProductPrice(e.target.value)}
+                onChange={(e) => setProductPrice(Number(e.target.value))}
               />
             </div>
 
@@ -174,7 +203,7 @@ export default function UploadForm() {
                 id="quantity"
                 type="number"
                 value={productQuantity}
-                onChange={(e) => setProductQuantity(e.target.value)}
+                onChange={(e) => setProductQuantity(Number(e.target.value))}
               />
             </div>
 
@@ -185,13 +214,13 @@ export default function UploadForm() {
                 id="discount"
                 type="number"
                 value={productDiscount}
-                onChange={(e) => setProductDiscount(e.target.value)}
+                onChange={(e) => setProductDiscount(Number(e.target.value))}
               />
             </div>
 
             <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
               <Label>Product Description</Label>
-              <Input
+              <Textarea
                 className="w-60"
                 value={productDescription}
                 onChange={(e) => setProductDescription(e.target.value)}
@@ -201,7 +230,7 @@ export default function UploadForm() {
             <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
               <p>Add New Category</p>
               <Label htmlFor="category">Category</Label>
-              <Input
+              <Textarea
                 className="w-60"
                 value={productCategory}
                 onChange={(e) => {
@@ -248,37 +277,11 @@ export default function UploadForm() {
               </select>
             </div>
           </div>
-          <div className="">
-            <div className="flex w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="picture">Main Image</Label>
-              <Input
-                className="w-60"
-                id="picture"
-                type="file"
-                name="main_image"
-                onChange={(e) =>
-                  setMainImage(e.target.files ? e.target.files[0] : null)
-                }
-              />
-            </div>
-            {[...Array(5)].map((_, index) => (
-              <div
-                key={index}
-                className="flex w-full max-w-sm items-center gap-1.5 my-4">
-                <Label htmlFor="thumbnail">Thumbnail {index + 1}</Label>
-                <Input
-                  className="w-60"
-                  id="thumbnail"
-                  type="file"
-                  name={`thumbnail${index + 1}`}
-                  onChange={(e) => handleThumbnailChange(e, index)}
-                />
-              </div>
-            ))}
-          </div>
         </div>
         <Button type="submit">Submit</Button>
       </form>
-    </section>
+    </div>
   );
-}
+};
+
+export default EditProductPage;
