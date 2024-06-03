@@ -74,3 +74,23 @@ export interface wishState {
   wishTotalQuantity: number;
   wishTotalAmount: number;
 }
+
+export interface FileData {
+  main_image: File;
+  thumbnail1: File;
+  thumbnail2: File;
+  thumbnail3: File;
+  thumbnail4: File;
+  thumbnail5: File;
+  fields: {
+    sku: string;
+    name: string;
+    description: string;
+    category: string;
+    status: "Archived" | "Active" | "Draft";
+    price: number;
+    discount: number;
+    quantity: number;
+    brand: string;
+  };
+}

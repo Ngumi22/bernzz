@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }),
   keepUnusedDataFor: 30,
   endpoints: (builder) => ({
     getAllProducts: builder.query({
@@ -14,16 +14,23 @@ export const productsApi = createApi({
       keepUnusedDataFor: 5,
     }),
 
-    getCategory: builder.query({
-      query: (category) => `products/category/${category}`, //get category
-      keepUnusedDataFor: 5,
-    }),
     getProductById: builder.query({
       query: (id) => `products/${id}`, //get id
       keepUnusedDataFor: 5,
     }),
+
+    getAllCategories: builder.query({
+      query: () => `/categories`, //get all categories
+      keepUnusedDataFor: 5,
+    }),
+
+    getCategory: builder.query({
+      query: (id) => `/categories/${id}`, //get category by id
+      keepUnusedDataFor: 5,
+    }),
+
     getProductByName: builder.query({
-      query: (name) => `products/${name}`, //get id
+      query: (name) => `products/${name}`, //get product by id
       keepUnusedDataFor: 5,
     }),
   }),
@@ -35,5 +42,6 @@ export const {
   useGetAllProductsQuery,
   useGetCategoryQuery,
   useGetProductByIdQuery,
+  useGetAllCategoriesQuery,
 } = productsApi;
 export type Category = string;
