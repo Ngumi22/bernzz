@@ -24,11 +24,6 @@ export const productsApi = createApi({
       keepUnusedDataFor: 5,
     }),
 
-    getCategory: builder.query({
-      query: (id) => `/categories/${id}`, //get category by id
-      keepUnusedDataFor: 5,
-    }),
-
     getProductByName: builder.query({
       query: (name) => `products/${name}`, //get product by id
       keepUnusedDataFor: 5,
@@ -40,7 +35,6 @@ export const productsApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
   useGetAllProductsQuery,
-  useGetCategoryQuery,
   useGetProductByIdQuery,
   useGetAllCategoriesQuery,
 } = productsApi;
