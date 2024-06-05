@@ -1,22 +1,19 @@
 import Link from "next/link";
-import { Menu, Package2, Search, ShoppingCart } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Cart from "@/components/Navigation/cart";
+import WishList from "./wishlist";
+import Compare from "./compare";
+import MegaMenu from "../Mega-Menu/mega-menu";
 
 export default function MainNav() {
   return (
     <div className="flex w-full flex-col">
-      {/* <div className="bg-black h-14">
+      <div className="bg-black h-14">
         <p>Marquee</p>
-      </div> */}
+      </div>
       <header className="sticky top-0 flex justify-between h-28 items-center gap-4 border-b bg-background px-4 md:px-8">
         <div className="hidden flex-col gap-6 md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <h2 className="font-extrabold text-4xl">Bernzz</h2>
@@ -77,10 +74,14 @@ export default function MainNav() {
             </div>
           </form>
         </div>
-        <div className="">
+        <div className="flex items-center justify-center gap-4">
+          <Compare />
+          <WishList />
           <Cart />
         </div>
       </header>
+
+      <MegaMenu />
     </div>
   );
 }

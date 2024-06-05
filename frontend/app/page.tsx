@@ -1,13 +1,13 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import HeroCarousel from "@/components/Hero/hero-carousel";
+import Hero from "@/components/Hero-Section/hero-carousel";
 
 export default function Home() {
   return (
     <main>
       <ToastContainer />
-      <HeroCarousel />
+      <Hero />
     </main>
   );
 }
